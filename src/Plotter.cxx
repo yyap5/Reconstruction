@@ -62,12 +62,12 @@ void Plotter::PlotTrueAndReconZY(){
   TCanvas *c = new TCanvas("c", "recon track", 800, 600);
 
   //set true hits Black
-  g_primaryZY->SetLineColor(kBlack);
-  g_notprimaryZY->SetLineColor(kBlack);
+  g_primaryZY->SetMarkerColor(kBlack);
+  g_notprimaryZY->SetMarkerColor(kBlack);
 
   TMultiGraph *mg = new TMultiGraph();
-  mg->Add(g_primaryZY, "AP");
-  mg->Add(g_notprimaryZY, "AP");
+  mg->Add(g_primaryZY, "P");
+  mg->Add(g_notprimaryZY, "P");
 
   for(auto* g : gs_reconZY){
     mg->Add(g, "L");
@@ -81,12 +81,12 @@ void Plotter::PlotTrueAndReconZY(){
 void Plotter::PlotTrueZY(){
   TCanvas *c = new TCanvas("c", "recon track", 800, 600);
   //set primary->red , not->black
-  g_primaryZY->SetLineColor(kRed);
-  g_notprimaryZY->SetLineColor(kBlack);
+  g_primaryZY->SetMarkerColor(kRed);
+  g_notprimaryZY->SetMarkerColor(kBlack);
 
   TMultiGraph *mg = new TMultiGraph();
-  mg->Add(g_primaryZY, "AP");
-  mg->Add(g_notprimaryZY, "AP");
+  mg->Add(g_primaryZY, "P");
+  mg->Add(g_notprimaryZY, "P");
 
   mg->SetTitle("True Hits; Z [mm];Y [mm]");
   mg->Draw("A");
