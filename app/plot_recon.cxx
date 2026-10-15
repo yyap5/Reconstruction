@@ -63,12 +63,10 @@ int main(int argc, char* argv[]){
   ////////
   Plotter plotevent;
   plotevent.SetPrimaryHitsZY(SWDhits.GetPrimaryHits());
-/*
   plotevent.SetNotPrimaryHitsZY(SWDhits.GetNotPrimaryHits());
   plotevent.SetReconTrack(recon_track);
 
   plotevent.PlotTrueZY();
-*/
 
 /*
   for(const auto& [lay, hitv] : hits_by_module){
