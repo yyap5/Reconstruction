@@ -44,7 +44,7 @@ int main(int argc, char* argv[]){
   for(const auto& [key, hits] : merged_hits_by_module){
     keys.push_back(key);
   }
-  std::sort(keys.begin(), keys.end(), greater<int>());
+  std::sort(keys.begin(), keys.end(), std::greater<int>());
   for(const auto& key : keys){
     sorted_hits.push_back(merged_hits_by_module.at(key));
   }
