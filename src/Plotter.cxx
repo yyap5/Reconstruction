@@ -91,6 +91,12 @@ void Plotter::PlotTrueZY(){
   mg->SetTitle("True Hits; Z [mm];Y [mm]");
   mg->Draw("A");
 
+  TLegend *leg = new TLegend(0.7, 0.8, 0.9, 0.89);
+  leg->AddEntry(g_primaryZY, "primary hit", "p");
+  leg->AddEntry(g_notprimaryZY, "not primary hit", "p");
+  leg->SetBorderSize(0);
+  leg->Draw();
+
   c->Update();
 }
 
