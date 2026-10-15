@@ -13,6 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
       Hist
       Graf
       Gpad
+      Gui
       )
 
 # ROOT include directories and compile flags
@@ -40,6 +41,7 @@ include_directories(
                                  ROOT::Hist
                                  ROOT::Graf
                                  ROOT::Gpad
+                                 ROOT::Gui
                                  )
 
 # Applications

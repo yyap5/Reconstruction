@@ -1,6 +1,7 @@
 #include <TFile.h>
 #include <TTree.h>
 #include <TString.h>
+#include <TApplication.h>
 
 #include "DataTypes.hxx"
 #include "TrackReconstructor.hxx"
@@ -10,6 +11,7 @@
 
 
 int main(int argc, char* argv[]){
+  TApplication app("app", &argc, argv);
   if(argc != 3){
     std::cout << "# arguments is wrong." << std::endl;
     return 1;
@@ -68,14 +70,15 @@ int main(int argc, char* argv[]){
 
   plotevent.PlotTrueZY();
 
-/*
-  for(const auto& [lay, hitv] : hits_by_module){
-    std::cout << "layer" << lay << std::endl;
-    for(const auto& hits : hitv){
-      std::cout << "charge:" << hits.first << ", " << "pos.z " << hits.second.z << std::endl;
-    }
-  }
-*/
+  /*
+     for(const auto& [lay, hitv] : hits_by_module){
+     std::cout << "layer" << lay << std::endl;
+     for(const auto& hits : hitv){
+     std::cout << "charge:" << hits.first << ", " << "pos.z " << hits.second.z << std::endl;
+     }
+     }
+   */
+  app.Run();
   return 0;
 
 }
