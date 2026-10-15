@@ -40,11 +40,11 @@ int main(int argc, char* argv[]){
   //Sort hits//
   /////////////
   std::vector<std::vector<std::pair<int, three_vector>>> sorted_hits;
-  vector<int> keys;
+  std::vector<int> keys;
   for(const auto& [key, hits] : merged_hits_by_module){
     keys.push_back(key);
   }
-  sort(keys.begin(), keys.end(), greater<int>());
+  std::sort(keys.begin(), keys.end(), greater<int>());
   for(const auto& key : keys){
     sorted_hits.push_back(merged_hits_by_module.at(key));
   }
