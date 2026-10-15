@@ -6,6 +6,8 @@
 #include "TrackReconstructor.hxx"
 #include "HitMerger.hxx"
 #include "HITSTreeReader.hxx"
+#include "Plotter.hxx"
+
 
 int main(int argc, char* argv[]){
   if(argc != 3){
