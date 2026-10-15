@@ -9,7 +9,7 @@
 
 class HITSTreeReader{
   public:
-    HITSTreeReader(TTree* hits) : tree(hits) {Initialize();}
+    HITSTreeReader(TTree* hits, int event_num) : tree(hits), target_event(event_num) {Initialize();}
 
     std::vector<three_vector> GetPrimaryHits(){return fPrimaryHits;}
     std::vector<three_vector> GetNotPrimaryHits(){return fNotPrimaryHits;}
@@ -18,6 +18,7 @@ class HITSTreeReader{
 
   private:
     TTree* tree;
+    int target_event;
 
     std::vector<three_vector> fPrimaryHits;
     std::vector<three_vector> fNotPrimaryHits;

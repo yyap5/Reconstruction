@@ -24,7 +24,7 @@ int main(int argc, char* argv[]){
   //////////////////////
   //Read hits and save//
   //////////////////////
-  HITSTreeReader SWDhits(tree);
+  HITSTreeReader SWDhits(tree, target_event);
 
   std::unordered_map<int,std::vector<std::pair<Int_t,charge_three_vector>>> hits_by_module = SWDhits.GetAllHits();
 
