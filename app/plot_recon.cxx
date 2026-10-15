@@ -61,8 +61,8 @@ int main(int argc, char* argv[]){
   ////////
   //Plot//
   ////////
-/*
   Plotter plotevent;
+/*
   plotevent.SetPrimaryHitsZY(SWDhits.GetPrimaryHits());
   plotevent.SetNotPrimaryHitsZY(SWDhits.GetNotPrimaryHits());
   plotevent.SetReconTrack(recon_track);
