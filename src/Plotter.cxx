@@ -69,7 +69,7 @@ void Plotter::PlotTrueAndReconZY(){
   mg->Add(g_primaryZY, "AP");
   mg->Add(g_notprimaryZY, "AP");
 
-  for(const auto* g : gs_reconZY){
+  for(auto* g : gs_reconZY){
     mg->Add(g, "L");
   }
   mg->SetTitle("Reconstructed tracks;Z [mm];Y [mm]");
