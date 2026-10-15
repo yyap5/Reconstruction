@@ -68,7 +68,8 @@ int main(int argc, char* argv[]){
   plotevent.SetNotPrimaryHitsZY(SWDhits.GetNotPrimaryHits());
   plotevent.SetReconTrack(recon_track);
 
-  plotevent.PlotTrueZY();
+  //plotevent.PlotTrueZY();
+  plotevent.PlotTrueAndReconZY();
 
   /*
      for(const auto& [lay, hitv] : hits_by_module){
