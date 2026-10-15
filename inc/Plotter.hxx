@@ -25,8 +25,8 @@ class Plotter{
 
   private:
 
-    TGraph *g_primaryZY;
-    TGraph *g_notprimaryZY;
+    TGraph *g_primaryZY = new TGraph;
+    TGraph *g_notprimaryZY = new TGraph;
     std::vector<TGraph*> gs_reconZY;
 };
 
