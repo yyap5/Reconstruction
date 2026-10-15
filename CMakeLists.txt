@@ -11,6 +11,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
       RIO
       Tree
       Hist
+      Graf
+      Gpad
       )
 
 # ROOT include directories and compile flags
@@ -36,6 +38,8 @@ include_directories(
                                  ROOT::RIO
                                  ROOT::Tree
                                  ROOT::Hist
+                                 ROOT::Graf
+                                 ROOT::Gpad
                                  )
 
 # Applications
