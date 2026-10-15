@@ -82,7 +82,7 @@ void Plotter::PlotTrueZY(){
   TCanvas *c = new TCanvas("c", "recon track", 800, 600);
   //set primary->red , not->black
   g_primaryZY->SetMarkerColor(kRed);
-  g_notprimaryZY->SetMarkerColor(kBlue);
+  g_notprimaryZY->SetMarkerColor(kCyan);
 
   TMultiGraph *mg = new TMultiGraph();
   mg->Add(g_primaryZY, "P");
