@@ -8,6 +8,7 @@
 #include <TGraph.h>
 #include <TMultiGraph.h>
 #include <TCanvas.h>
+#include <TLegend.h>
 
 #include "DataTypes.hxx"
 
