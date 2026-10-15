@@ -80,15 +80,18 @@ void Plotter::PlotTrueAndReconZY(){
 
 void Plotter::PlotTrueZY(){
   TCanvas *c = new TCanvas("c", "recon track", 800, 600);
-//set primary->red , not->black
-g_primaryZY->SetLineColor(kRed);
-g_notprimaryZY->SetLineColor(kBlack);
+  //set primary->red , not->black
+  g_primaryZY->SetLineColor(kRed);
+  g_notprimaryZY->SetLineColor(kBlack);
 
-TMultiGraph *mg = new TMultiGraph();
-mg->Add(g_primaryZY, "AP");
-mg->Add(g_notprimaryZY, "AP");
+  TMultiGraph *mg = new TMultiGraph();
+  mg->Add(g_primaryZY, "AP");
+  mg->Add(g_notprimaryZY, "AP");
 
-mg->SetTitle("True Hits; Z [mm];Y [mm]");
+  mg->SetTitle("True Hits; Z [mm];Y [mm]");
+  mg->Draw("A");
+
+  c->Update();
 }
 
 
