@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <iostream>
 #include <TGraph.h>
+#include <TMultiGraph.h>
 #include <TCanvas.h>
 
 #include "DataTypes.hxx"
