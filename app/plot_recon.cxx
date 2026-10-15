@@ -36,6 +36,23 @@ int main(int argc, char* argv[]){
   for(const auto& [key, cp] : hits_by_module){
     merged_hits_by_module[key] = hit_merger.Merge(cp);
   }
+  /////////////
+  //Sort hits//
+  /////////////
+  std::vector<std::vector<std::pair<int, three_vector>>> sorted_hits;
+  vector<int> keys;
+  for(const auto& [key, hits] : merged_hits_by_module){
+    keys.push_back(key);
+  }
+  sort(keys.begin(), keys.end(), greater<int>());
+  for(const auto& key : keys){
+    sorted_hits.push_back(merged_hits_by_module.at(key));
+  }
+  //////////////////
+  //Reconstruction//
+  //////////////////
+  TrackReconstructor track_reconstructor;
+  std::unordered_map<int, std::vector<std::pair<int, three_vector>>> recon_track = track_reconstructor.Reconstruct(sorted_hits);
 
   for(const auto& [lay, hitv] : hits_by_module){
     std::cout << "layer" << lay << std::endl;
