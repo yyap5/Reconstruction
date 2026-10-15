@@ -22,8 +22,10 @@ int main(int argc, char* argv[]){
 
   std::unordered_map<int,std::vector<std::pair<Int_t,charge_three_vector>>> hits_by_module = SWDhits.ReadHits(0);
 
+/*
   for(const auto& layh : hits_by_module){
-      for(const auto& hits : )
-    }
+    for(const auto& hits : )
+  }
+*/
 
 }
