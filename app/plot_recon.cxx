@@ -31,7 +31,7 @@ int main(int argc, char* argv[]){
   //////////////
   //Merge Hits//
   //////////////
-  HitMerger hit_merger();
+  HitMerger hit_merger;
   std::unordered_map<int, std::vector<std::pair<int, three_vector>>> merged_hits_by_module;
   for(const auto& [key, cp] : hits_by_module){
     merged_hits_by_module[key] = hit_merger.Merge(cp);
