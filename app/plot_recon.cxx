@@ -36,6 +36,7 @@ int main(int argc, char* argv[]){
   for(const auto& [key, cp] : hits_by_module){
     merged_hits_by_module[key] = hit_merger.Merge(cp);
   }
+
   /////////////
   //Sort hits//
   /////////////
@@ -48,6 +49,7 @@ int main(int argc, char* argv[]){
   for(const auto& key : keys){
     sorted_hits.push_back(merged_hits_by_module.at(key));
   }
+
   //////////////////
   //Reconstruction//
   //////////////////
@@ -57,6 +59,12 @@ int main(int argc, char* argv[]){
   ////////
   //Plot//
   ////////
+  Plotter plotevent;
+  plotevent.SetPrimaryHitsZY(SWDhits.GetPrimaryHits());
+  plotevent.SetNotPrimaryHitsZY(SWDhits.GetNotPrimaryHits());
+  plotevent.SetReconTrack(recon_track);
+
+  plotevent.PlotTrueZY();
 
   for(const auto& [lay, hitv] : hits_by_module){
     std::cout << "layer" << lay << std::endl;

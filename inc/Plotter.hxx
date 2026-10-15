@@ -13,7 +13,7 @@
 class Plotter{
   public:
 
-    Ploter();
+    Plotter();
 
     void SetPrimaryHitsZY(const std::vector<three_vector>& hits);
     void SetNotPrimaryHitsZY(const std::vector<three_vector>& hits);
