@@ -1,6 +1,6 @@
 #include "HITSTreeReader.hxx"
 
-std::unordered_map<int,std::vector<std::pair<Int_t,charge_three_vector>>> HITSTreeReader::ReadHits(int target_event){
+void HITSTreeReader::Initialize(){
 
   Int_t event;
   Int_t trackId;
@@ -32,7 +32,6 @@ std::unordered_map<int,std::vector<std::pair<Int_t,charge_three_vector>>> HITSTr
   tree->SetBranchAddress("primaryVertex", &primaryVertex);
   tree->SetBranchAddress("primaryInitialMomentum", &primaryInitialMomentum);
 
-  std::unordered_map<int,std::vector<std::pair<Int_t,charge_three_vector>>> hits_by_module;
 
   int nentries = tree->GetEntries();
   for(int i=0; i<nentries; i++){
@@ -40,9 +39,11 @@ std::unordered_map<int,std::vector<std::pair<Int_t,charge_three_vector>>> HITSTr
     if(event != target_event){continue;}
     if(trackId==-1){continue;}
     if(!(SWDFiberType == 0 && SWDFiberDirection == 0)){continue;}
-    hits_by_module[SWDFiberModule].push_back(std::make_pair(SWDFiberNumber, charge_three_vector{charge, pos.x, pos.y, pos.z}));
+    fAllHits[SWDFiberModule].push_back(std::make_pair(SWDFiberNumber, charge_three_vector{charge, pos.x, pos.y, pos.z}));
+
+    if(trackId == primaryTrackId){fPrimaryHits.push_back(three_vector{pos.x, pos.y, pos.z});}
+    if(trackId != primaryTrackId){fNotPrimaryHits.push_back(three_vector{pos.x, pos.y, pos.z});}
   }
 
-  return hits_by_module;
 
 }

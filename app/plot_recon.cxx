@@ -26,7 +26,7 @@ int main(int argc, char* argv[]){
   //////////////////////
   HITSTreeReader SWDhits(tree);
 
-  std::unordered_map<int,std::vector<std::pair<Int_t,charge_three_vector>>> hits_by_module = SWDhits.ReadHits(target_event);
+  std::unordered_map<int,std::vector<std::pair<Int_t,charge_three_vector>>> hits_by_module = SWDhits.GetAllHits();
 
   //////////////
   //Merge Hits//
@@ -53,6 +53,10 @@ int main(int argc, char* argv[]){
   //////////////////
   TrackReconstructor track_reconstructor;
   std::unordered_map<int, std::vector<std::pair<int, three_vector>>> recon_track = track_reconstructor.Reconstruct(sorted_hits);
+
+  ////////
+  //Plot//
+  ////////
 
   for(const auto& [lay, hitv] : hits_by_module){
     std::cout << "layer" << lay << std::endl;
