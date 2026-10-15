@@ -8,6 +8,7 @@
 #include "HITSTreeReader.hxx"
 
 int main(int argc, char* argv[]){
+std::cout << argc << std::endl;
   if(argc != 2){
     std::cout << "# arguments is wrong." << std::endl;
     return 1;
