@@ -66,12 +66,16 @@ void Plotter::PlotTrueAndReconZY(){
   g_notprimaryZY->SetMarkerColor(kBlack);
 
   TMultiGraph *mg = new TMultiGraph();
-  mg->Add(g_primaryZY, "P");
-  mg->Add(g_notprimaryZY, "P");
 
+  //recon track
   for(auto* g : gs_reconZY){
     mg->Add(g, "L");
   }
+
+  //true hits
+  mg->Add(g_primaryZY, "P");
+  mg->Add(g_notprimaryZY, "P");
+
   mg->SetTitle("Reconstructed tracks;Z [mm];Y [mm]");
   mg->Draw("A");
 
