@@ -55,6 +55,7 @@ std::pair<int, int> TrackReconstructor::MinMap(std::unordered_map<int, std::unor
 std::unordered_map<int, std::vector<std::pair<int,three_vector>>> TrackReconstructor::ReconstructLayer(
       std::unordered_map<int, std::vector<std::pair<int, three_vector>>> recon_track, const std::vector<std::pair<int, three_vector>>& new_layer
     ){
+
   std::unordered_map<int, Float_t> ref_value;
   for(const auto& [key, hit] : recon_track){
     if(hit.size()==1){ref_value[key] = -1;} // this track is not line but point
@@ -64,7 +65,7 @@ std::unordered_map<int, std::vector<std::pair<int,three_vector>>> TrackReconstru
   }
   std::unordered_map<int, int> comp_sign; // 1 : complete, 0 : yet
   for(const auto& [key, hit] : recon_track){
-    if(abs(new_layer.at(0).second.z - hit.back().second.z) < 30.){comp_sign[key] = 0;}
+    if(std::fabs(new_layer.at(0).second.z - hit.back().second.z) < 30.){comp_sign[key] = 0;}
     else{comp_sign[key] = 1;}
   }
   std::unordered_map<int, std::unordered_map<int, Float_t>> p_evaluation_value; //<new hit, <recon track, value>>
@@ -90,8 +91,8 @@ std::unordered_map<int, std::vector<std::pair<int,three_vector>>> TrackReconstru
         Float_t sl = atan(Slope(hit.back().second, new_hit));
         Float_t p_sl = atan(hit.back().first-1);
         Float_t m_sl = atan(-1*hit.back().first+1);
-        Float_t p_sl_change = abs(p_sl - sl);
-        Float_t m_sl_change = abs(m_sl - sl);
+        Float_t p_sl_change = std::fabs(p_sl - sl);
+        Float_t m_sl_change = std::fabs(m_sl - sl);
         Float_t slope_change = m_sl_change;
         if(p_sl_change < m_sl_change){slope_change = p_sl_change;}
         if(slope_change > fMaxSlopeChangeAdjacent){continue;}
@@ -100,22 +101,14 @@ std::unordered_map<int, std::vector<std::pair<int,three_vector>>> TrackReconstru
       //line
       else{
         Float_t sl = atan(Slope(hit.back().second, new_hit));
-        Float_t slope_change = abs(sl - ref_value[key]);
+        Float_t slope_change = std::fabs(sl - ref_value[key]);
         if(slope_change > fMaxSlopeChange){continue;}
         l_evaluation_value[i][key] = slope_change;
       }
 
     }
   }
-  //evaluation print
-  /*
-  for(const auto& [nkey, n_map] : l_evaluation_value){
-    for(const auto& [mkey, m_map] : n_map){
-      std::cout << "(" << nkey << ", " << mkey << ") " << m_map << std::endl;
-    }
-  }
-  std::cout << "-----------------------------" << std::endl;
-  */
+
   //line
   while(1){
     // checking if there are any hits to be connected

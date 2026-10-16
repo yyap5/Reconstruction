@@ -53,15 +53,13 @@ int main(int argc, char* argv[]){
   for(const auto& key : keys){
     sorted_hits.push_back(merged_hits_by_module.at(key));
   }
-  std::cout << "test" << std::endl;
-  std::cout << "test2" << std::endl;
-  std::cout << "test3" << std::endl;
 
   //////////////////
   //Reconstruction//
   //////////////////
   TrackReconstructor track_reconstructor;
   std::unordered_map<int, std::vector<std::pair<int, three_vector>>> recon_track = track_reconstructor.Reconstruct(sorted_hits);
+
 
   ////////
   //Plot//
