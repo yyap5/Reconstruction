@@ -53,6 +53,7 @@ int main(int argc, char* argv[]){
   for(const auto& key : keys){
     sorted_hits.push_back(merged_hits_by_module.at(key));
   }
+  std::cout << "test" << std::endl;
 
   //////////////////
   //Reconstruction//
