@@ -53,6 +53,12 @@ int main(int argc, char* argv[]){
   for(const auto& key : keys){
     sorted_hits.push_back(merged_hits_by_module.at(key));
   }
+//debug
+  for(const auto& v : sorted_hits){
+    for(const auto& hit : v){
+      std::cout << v.second.z << std::endl;
+    }
+  }
 
   //////////////////
   //Reconstruction//
