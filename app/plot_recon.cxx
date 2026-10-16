@@ -56,7 +56,7 @@ int main(int argc, char* argv[]){
 //debug
   for(const auto& v : sorted_hits){
     for(const auto& hit : v){
-      std::cout << v.second.z << std::endl;
+      std::cout << hit.second.z << std::endl;
     }
   }
 
