@@ -159,6 +159,50 @@ void Plotter::PlotTrue(TGraph *g_primary, TGraph *g_notprimary, const char* yaxi
   c->Update();
 }
 
+void Plotter::Plot2DRecon(){
+  TCanvas *c = new TCanvas("c", "recon track", 800, 1000);
+  c->Divide(1, 2);
+
+
+  //set true hits Black
+  g_primaryZY->SetMarkerColor(kBlack);
+  g_primaryZX->SetMarkerColor(kBlack);
+  g_notprimaryZY->SetMarkerColor(kBlack);
+  g_notprimaryZX->SetMarkerColor(kBlack);
+
+
+  TMultiGraph *mg_ZY = new TMultiGraph();
+  TMultiGraph *mg_ZX = new TMultiGraph();
+
+  //recon track
+  for(auto* g : gs_reconZX){
+    mg_ZX->Add(g, "L");
+  }
+  for(auto* g : gs_reconZY){
+    mg_ZY->Add(g, "L");
+  }
+
+  //true hits
+  mg_ZX->Add(g_primaryZX, "P");
+  mg_ZX->Add(g_notprimaryZX, "P");
+  mg_ZY->Add(g_primaryZY, "P");
+  mg_ZY->Add(g_notprimaryZY, "P");
+
+  mg_ZX->SetTitle("Reconstructed tracks;Z [mm];X [mm]");
+  mg_ZY->SetTitle("Reconstructed tracks;Z [mm];Y [mm]");
+
+  c->cd(1);
+  mg_ZX->GetXaxis()->SetLimits(-900, 350);
+  mg_ZX->Draw("A");
+  c->cd(2);
+  mg_ZY->GetXaxis()->SetLimits(-900, 350);
+  mg_ZY->Draw("A");
+
+  c->Update();
+
+
+}
+
 void Plotter::Plot3DRecon(){
   TCanvas *c = new TCanvas("c", "recon track", 800, 1000);
   c->Divide(1, 2);

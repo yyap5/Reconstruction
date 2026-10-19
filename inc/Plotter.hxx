@@ -40,6 +40,9 @@ class Plotter{
     void PlotTrueAndReconZX();
     void PlotTrueZX();
 
+    //Plotting Both
+    void Plot2DRecon();
+
     //Plotting 3D recon
     void Plot3DReconZY();
     void Plot3DReconZX();

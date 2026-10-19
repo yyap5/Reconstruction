@@ -9,6 +9,7 @@
 #include "HITSTreeReader.hxx"
 #include "Plotter.hxx"
 #include "Sort.hxx"
+#include "Recon3D.hxx"
 
 
 int main(int argc, char* argv[]){
@@ -32,14 +33,19 @@ int main(int argc, char* argv[]){
   HITSTreeReader SWDhits(tree, target_event);
 
   std::unordered_map<int,std::vector<std::pair<Int_t,charge_two_vector>>> hits_by_module_ZY = SWDhits.GetAllHitsZY();
+  std::unordered_map<int,std::vector<std::pair<Int_t,charge_two_vector>>> hits_by_module_ZX = SWDhits.GetAllHitsZX();
 
   //////////////
   //Merge Hits//
   //////////////
   HitMerger hit_merger;
   std::unordered_map<int, std::vector<std::pair<int, two_vector>>> merged_hits_by_module_ZY;
+  std::unordered_map<int, std::vector<std::pair<int, two_vector>>> merged_hits_by_module_ZX;
   for(const auto& [key, cp] : hits_by_module_ZY){
     merged_hits_by_module_ZY[key] = hit_merger.Merge(cp);
+  }
+  for(const auto& [key, cp] : hits_by_module_ZX){
+    merged_hits_by_module_ZX[key] = hit_merger.Merge(cp);
   }
 
   /////////////
@@ -47,12 +53,14 @@ int main(int argc, char* argv[]){
   /////////////
   Sort sort_hits;
   std::vector<std::vector<std::pair<int, two_vector>>> sorted_hits_ZY = sort_hits.ForwardSort(merged_hits_by_module_ZY);
+  std::vector<std::vector<std::pair<int, two_vector>>> sorted_hits_ZX = sort_hits.ForwardSort(merged_hits_by_module_ZX);
 
   //////////////////
   //Reconstruction//
   //////////////////
   TrackReconstructor track_reconstructor;
   std::unordered_map<int, std::vector<std::pair<int, two_vector>>> recon_track_ZY = track_reconstructor.Reconstruct(sorted_hits_ZY);
+  std::unordered_map<int, std::vector<std::pair<int, two_vector>>> recon_track_ZX = track_reconstructor.Reconstruct(sorted_hits_ZX);
 
 
   ////////
@@ -64,10 +72,13 @@ int main(int argc, char* argv[]){
   plotevent.SetNotPrimaryHitsZY(SWDhits.GetNotPrimaryHitsZY());
   plotevent.SetNotPrimaryHitsZX(SWDhits.GetNotPrimaryHitsZX());
   plotevent.SetReconTrackZY(recon_track_ZY);
+  plotevent.SetReconTrackZX(recon_track_ZX);
 
   //plotevent.PlotTrueZY();
   //plotevent.PlotTrueZX();
-  plotevent.PlotTrueAndReconZY();
+  //plotevent.PlotTrueAndReconZY();
+  //plotevent.PlotTrueAndReconZX();
+  plotevent.Plot2DRecon();
 
   app.Run();
   return 0;
