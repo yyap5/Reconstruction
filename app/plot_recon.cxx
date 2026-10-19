@@ -8,6 +8,7 @@
 #include "HitMerger.hxx"
 #include "HITSTreeReader.hxx"
 #include "Plotter.hxx"
+#include "Sort.hxx"
 
 
 int main(int argc, char* argv[]){
@@ -44,15 +45,8 @@ int main(int argc, char* argv[]){
   /////////////
   //Sort hits//
   /////////////
-  std::vector<std::vector<std::pair<int, two_vector>>> sorted_hits_ZY;
-  std::vector<int> keys;
-  for(const auto& [key, hits] : merged_hits_by_module_ZY){
-    keys.push_back(key);
-  }
-  std::sort(keys.begin(), keys.end(), std::greater<int>());
-  for(const auto& key : keys){
-    sorted_hits_ZY.push_back(merged_hits_by_module_ZY.at(key));
-  }
+  Sort sort_hits;
+  std::vector<std::vector<std::pair<int, two_vector>>> sorted_hits_ZY = sort_hits.ForwardSort(merged_hits_by_module_ZY);
 
   //////////////////
   //Reconstruction//
@@ -72,8 +66,8 @@ int main(int argc, char* argv[]){
   plotevent.SetReconTrackZY(recon_track_ZY);
 
   //plotevent.PlotTrueZY();
-  plotevent.PlotTrueZX();
-  //plotevent.PlotTrueAndReconZY();
+  //plotevent.PlotTrueZX();
+  plotevent.PlotTrueAndReconZY();
 
   app.Run();
   return 0;
