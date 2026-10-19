@@ -38,12 +38,21 @@ void HITSTreeReader::Initialize(){
     tree->GetEntry(i);
     if(event != target_event){continue;}
     if(trackId==-1){continue;}
-    if(!(SWDFiberType == 0 && SWDFiberDirection == 0)){continue;}
-    fAllHits[SWDFiberModule].push_back(std::make_pair(SWDFiberNumber, charge_three_vector{charge, pos.x, pos.y, pos.z}));
+    //for ZY plane
+    if(SWDFiberType == 0 && SWDFiberDirection == 0){
+      fAllHitsZY[SWDFiberModule].push_back(std::make_pair(SWDFiberNumber, charge_two_vector{charge, pos.z, pos.y}));
 
-    if(trackId == primaryTrackId){fPrimaryHits.push_back(three_vector{pos.x, pos.y, pos.z});}
-    if(trackId != primaryTrackId){fNotPrimaryHits.push_back(three_vector{pos.x, pos.y, pos.z});}
+      if(trackId == primaryTrackId){fPrimaryHitsZY.push_back(two_vector{pos.z, pos.y});}
+      if(trackId != primaryTrackId){fNotPrimaryHitsZY.push_back(two_vector{pos.z, pos.y});}
+    }
+
+    //for ZX plane
+    if(SWDFiberType == 0 && SWDFiberDirection == 1){
+      fAllHitsZX[SWDFiberModule].push_back(std::make_pair(SWDFiberNumber, charge_two_vector{charge, pos.z, pos.x}));
+
+      if(trackId == primaryTrackId){fPrimaryHitsZX.push_back(two_vector{pos.z, pos.x});}
+      if(trackId != primaryTrackId){fNotPrimaryHitsZX.push_back(two_vector{pos.z, pos.x});}
+    }
+
   }
-
-
 }
