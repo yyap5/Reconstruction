@@ -16,11 +16,22 @@ struct three_vector{
   Float_t z;
 };
 
+struct two_vector{
+  Float_t x;
+  Float_t y;
+};
+
 struct charge_three_vector{
   Float_t cha;
   Float_t x;
   Float_t y;
   Float_t z;
+};
+
+struct charge_two_vector{
+  Float_t cha;
+  Float_t x;
+  Float_t y;
 };
 
 #endif
