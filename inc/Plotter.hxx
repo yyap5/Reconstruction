@@ -10,6 +10,7 @@
 #include <TCanvas.h>
 #include <TLegend.h>
 #include <TString.h>
+#include <TAxis.h>
 
 #include "DataTypes.hxx"
 

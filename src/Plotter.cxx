@@ -192,8 +192,10 @@ void Plotter::Plot3DRecon(){
   mg_ZY->SetTitle("Reconstructed tracks;Z [mm];Y [mm]");
 
   c->cd(1);
+  mg_ZX->GetXaxis()->SetLimits(-900, 350);
   mg_ZX->Draw("A");
   c->cd(2);
+  mg_ZY->GetXaxis()->SetLimits(-900, 350);
   mg_ZY->Draw("A");
 
   c->Update();
