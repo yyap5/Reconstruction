@@ -159,6 +159,39 @@ void Plotter::PlotTrue(TGraph *g_primary, TGraph *g_notprimary, const char* yaxi
   c->Update();
 }
 
+void Plotter::Plot2DTrue(){
+  TCanvas *c = new TCanvas("c", "recon track", 800, 1000);
+  c->Divide(1, 2);
+
+
+  //set true hits Black
+  g_primaryZY->SetMarkerColor(kRed);
+  g_primaryZX->SetMarkerColor(kRed);
+  g_notprimaryZY->SetMarkerColor(kCyan+1);
+  g_notprimaryZX->SetMarkerColor(kCyan+1);
+
+  TMultiGraph *mg_ZY = new TMultiGraph();
+  TMultiGraph *mg_ZX = new TMultiGraph();
+
+  //true hits
+  mg_ZX->Add(g_primaryZX, "P");
+  mg_ZX->Add(g_notprimaryZX, "P");
+  mg_ZY->Add(g_primaryZY, "P");
+  mg_ZY->Add(g_notprimaryZY, "P");
+
+  mg_ZX->SetTitle("True Hits;Z [mm];X [mm]");
+  mg_ZY->SetTitle("True Hits;Z [mm];Y [mm]");
+
+  c->cd(1);
+  mg_ZX->GetXaxis()->SetLimits(-900, 350);
+  mg_ZX->Draw("A");
+  c->cd(2);
+  mg_ZY->GetXaxis()->SetLimits(-900, 350);
+  mg_ZY->Draw("A");
+
+  c->Update();
+}
+
 void Plotter::Plot2DRecon(){
   TCanvas *c = new TCanvas("c", "recon track", 800, 1000);
   c->Divide(1, 2);
