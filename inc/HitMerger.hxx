@@ -12,9 +12,9 @@ class HitMerger{
 
     HitMerger() = default;
 
-    std::vector<std::pair<int, three_vector>> 
+    std::vector<std::pair<int, two_vector>> 
       Merge(
-          const std::vector<std::pair<Int_t, charge_three_vector>>& hits
+          const std::vector<std::pair<Int_t, charge_two_vector>>& hits
           );
 
   private:

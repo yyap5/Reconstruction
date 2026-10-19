@@ -13,10 +13,10 @@ Float_t HitMerger::ChargeMean(
   return charge_hit / sum_charge;
 }
 
-std::vector<std::pair<int, three_vector>> HitMerger::Merge(
-    const std::vector<std::pair<Int_t, charge_three_vector>>& v
+std::vector<std::pair<int, two_vector>> HitMerger::Merge(
+    const std::vector<std::pair<Int_t, charge_two_vector>>& v
     ){
-  std::vector<std::pair<int, three_vector>> m_hits;
+  std::vector<std::pair<int, two_vector>> m_hits;
   std::vector<bool> used(v.size(), false);
 
   for(size_t i = 0; i < v.size(); i++){
@@ -64,7 +64,7 @@ std::vector<std::pair<int, three_vector>> HitMerger::Merge(
       current++;
     }
 
-    m_hits.push_back(std::make_pair(layer_hits.size(), three_vector{v.at(i).second.x, ChargeMean(layer_hits), v.at(i).second.z}));
+    m_hits.push_back(std::make_pair(layer_hits.size(), two_vector{v.at(i).second.x, ChargeMean(layer_hits)}));
   }
 
   return m_hits;
