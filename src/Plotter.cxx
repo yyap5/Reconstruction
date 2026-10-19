@@ -28,7 +28,7 @@ void Plotter::SetNotPrimaryHitsZX(const std::vector<two_vector>& hits){
 }
 
 void Plotter::SetTracks(
-    const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_track, std::vector<TGraph*> g_vector){
+    const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_track, std::vector<TGraph*>& g_vector){
 
   //recon track color table
   int colors[] = {
@@ -70,7 +70,7 @@ void Plotter::SetReconTrackZX(
   SetTracks(recon_track, gs_reconZX);
 }
 
-void Plotter::PlotTrueAndRecon(TGraph *g_primary, TGraph *g_notprimary, std::vector<TGraph*> g_vector, const char* yaxis){
+void Plotter::PlotTrueAndRecon(TGraph *g_primary, TGraph *g_notprimary, std::vector<TGraph*>& g_vector, const char* yaxis){
   TCanvas *c = new TCanvas("c", "recon track", 800, 600);
 
   //set true hits Black
@@ -98,7 +98,7 @@ void Plotter::PlotTrue(TGraph *g_primary, TGraph *g_notprimary, const char* yaxi
   TCanvas *c = new TCanvas("c", "recon track", 800, 600);
   //set primary->red , not->black
   g_primary->SetMarkerColor(kRed);
-  g_notprimary->SetMarkerColor(kCyan);
+  g_notprimary->SetMarkerColor(kCyan+1);
 
   TMultiGraph *mg = new TMultiGraph();
   mg->Add(g_primary, "P");

@@ -66,20 +66,15 @@ int main(int argc, char* argv[]){
   ////////
   Plotter plotevent;
   plotevent.SetPrimaryHitsZY(SWDhits.GetPrimaryHitsZY());
+  plotevent.SetPrimaryHitsZX(SWDhits.GetPrimaryHitsZX());
   plotevent.SetNotPrimaryHitsZY(SWDhits.GetNotPrimaryHitsZY());
+  plotevent.SetNotPrimaryHitsZX(SWDhits.GetNotPrimaryHitsZX());
   plotevent.SetReconTrackZY(recon_track_ZY);
 
   //plotevent.PlotTrueZY();
-  plotevent.PlotTrueAndReconZY();
+  plotevent.PlotTrueZX();
+  //plotevent.PlotTrueAndReconZY();
 
-  /*
-     for(const auto& [lay, hitv] : hits_by_module){
-     std::cout << "layer" << lay << std::endl;
-     for(const auto& hits : hitv){
-     std::cout << "charge:" << hits.first << ", " << "pos.z " << hits.second.z << std::endl;
-     }
-     }
-   */
   app.Run();
   return 0;
 

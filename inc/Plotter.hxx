@@ -39,9 +39,9 @@ class Plotter{
   private:
 
     void SetHits(const std::vector<two_vector>& hits, TGraph *g);
-    void SetTracks(const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& hits, std::vector<TGraph*> g_vector);
+    void SetTracks(const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& hits, std::vector<TGraph*>& g_vector);
 
-    void PlotTrueAndRecon(TGraph *g_primary, TGraph *g_notprimary, std::vector<TGraph*> g_vector, const char* yaxis);
+    void PlotTrueAndRecon(TGraph *g_primary, TGraph *g_notprimary, std::vector<TGraph*>& g_vector, const char* yaxis);
     void PlotTrue(TGraph *g_primary, TGraph *g_notprimary, const char* yaxis);
 
 
