@@ -61,6 +61,12 @@ int main(int argc, char* argv[]){
   std::unordered_map<int, std::vector<std::pair<int, two_vector>>> recon_track_ZY = track_reconstructor.Reconstruct(sorted_hits_ZY);
   std::unordered_map<int, std::vector<std::pair<int, two_vector>>> recon_track_ZX = track_reconstructor.Reconstruct(sorted_hits_ZX);
 
+  /////////////////////
+  //3D Reconstruction//
+  /////////////////////
+  Recon3D track_reconstructor3D;
+  std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> matched_track = track_reconstructor3D.Match(recon_track_ZX, recon_track_ZY);
+
 
   ////////
   //Plot//
