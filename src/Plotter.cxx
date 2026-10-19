@@ -27,7 +27,7 @@ void Plotter::SetNotPrimaryHitsZX(const std::vector<two_vector>& hits){
   SetHits(hits, g_notprimaryZX);
 }
 
-void SetTracks(
+void Plotter::SetTracks(
     const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_track, std::vector<TGraph*> g_vector){
 
   //recon track color table
@@ -57,7 +57,6 @@ void SetTracks(
     icolor++;
     if(icolor >=8) icolor=0;
   }
-
 
 }
 
