@@ -42,6 +42,7 @@ class Plotter{
     //Plotting 3D recon
     void Plot3DReconZY();
     void Plot3DReconZX();
+    void Plot3DRecon();
 
   private:
 

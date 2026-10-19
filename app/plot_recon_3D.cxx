@@ -85,7 +85,7 @@ int main(int argc, char* argv[]){
   //plotevent.PlotTrueZX();
   //plotevent.PlotTrueAndReconZY();
   //plotevent.PlotTrueAndReconZX();
-  plotevent.Plot3DReconZY();
+  plotevent.Plot3DRecon();
 
   app.Run();
   return 0;
