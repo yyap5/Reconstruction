@@ -15,8 +15,8 @@ class TrackReconstructor{
 
     TrackReconstructor();
 
-    std::unordered_map<int, std::vector<std::pair<int, three_vector>>> Reconstruct(
-        const std::vector<std::vector<std::pair<int, three_vector>>>& layers
+    std::unordered_map<int, std::vector<std::pair<int, two_vector>>> Reconstruct(
+        const std::vector<std::vector<std::pair<int, two_vector>>>& layers
         );
 
 
@@ -26,14 +26,14 @@ class TrackReconstructor{
     Float_t fMaxSlopeChangeAdjacent;
     Float_t fMaxLength;
 
-    Float_t Length(const three_vector& a, const three_vector& b);
+    Float_t Length(const two_vector& a, const two_vector& b);
 
-    Float_t Slope(const three_vector& a, const three_vector& b);
+    Float_t Slope(const two_vector& a, const two_vector& b);
 
     std::pair<int, int> MinMap(std::unordered_map<int, std::unordered_map<int, Float_t>> map);
 
-    std::unordered_map<int, std::vector<std::pair<int,three_vector>>> ReconstructLayer(
-         std::unordered_map<int, std::vector<std::pair<int, three_vector>>> recon_track, const std::vector<std::pair<int, three_vector>>& new_layer
+    std::unordered_map<int, std::vector<std::pair<int,two_vector>>> ReconstructLayer(
+         std::unordered_map<int, std::vector<std::pair<int, two_vector>>> recon_track, const std::vector<std::pair<int, two_vector>>& new_layer
         );
 
 };

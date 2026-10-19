@@ -7,10 +7,10 @@ TrackReconstructor::TrackReconstructor(){
   fMaxLength = 25.;
 }
 
-std::unordered_map<int, std::vector<std::pair<int, three_vector>>> TrackReconstructor::Reconstruct(
-    const std::vector<std::vector<std::pair<int, three_vector>>>& layers
+std::unordered_map<int, std::vector<std::pair<int, two_vector>>> TrackReconstructor::Reconstruct(
+    const std::vector<std::vector<std::pair<int, two_vector>>>& layers
     ){
-  std::unordered_map<int, std::vector<std::pair<int, three_vector>>> recon_track;
+  std::unordered_map<int, std::vector<std::pair<int, two_vector>>> recon_track;
 
   if(layers.empty()){return recon_track;}
 
@@ -29,13 +29,13 @@ std::unordered_map<int, std::vector<std::pair<int, three_vector>>> TrackReconstr
   return recon_track;
 }
 
-Float_t TrackReconstructor::Length(const three_vector& a, const three_vector& b){
-  Float_t length = (a.z-b.z)*(a.z-b.z) + (a.y-b.y)*(a.y-b.y);
+Float_t TrackReconstructor::Length(const two_vector& a, const two_vector& b){
+  Float_t length = (a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y);
   return std::sqrt(length);
 }
 
-Float_t TrackReconstructor::Slope(const three_vector& a, const three_vector& b){
-  return (a.y - b.y) / (a.z - b.z);
+Float_t TrackReconstructor::Slope(const two_vector& a, const two_vector& b){
+  return (a.y - b.y) / (a.x - b.x);
 }
 
 std::pair<int, int> TrackReconstructor::MinMap(std::unordered_map<int, std::unordered_map<int, Float_t>> map){
@@ -52,8 +52,8 @@ std::pair<int, int> TrackReconstructor::MinMap(std::unordered_map<int, std::unor
   return min_key;
 }
 
-std::unordered_map<int, std::vector<std::pair<int,three_vector>>> TrackReconstructor::ReconstructLayer(
-      std::unordered_map<int, std::vector<std::pair<int, three_vector>>> recon_track, const std::vector<std::pair<int, three_vector>>& new_layer
+std::unordered_map<int, std::vector<std::pair<int,two_vector>>> TrackReconstructor::ReconstructLayer(
+      std::unordered_map<int, std::vector<std::pair<int, two_vector>>> recon_track, const std::vector<std::pair<int, two_vector>>& new_layer
     ){
 
   std::unordered_map<int, Float_t> ref_value;
@@ -65,7 +65,7 @@ std::unordered_map<int, std::vector<std::pair<int,three_vector>>> TrackReconstru
   }
   std::unordered_map<int, int> comp_sign; // 1 : complete, 0 : yet
   for(const auto& [key, hit] : recon_track){
-    if(std::fabs(new_layer.at(0).second.z - hit.back().second.z) < 30.){comp_sign[key] = 0;}
+    if(std::fabs(new_layer.at(0).second.x - hit.back().second.x) < 30.){comp_sign[key] = 0;}
     else{comp_sign[key] = 1;}
   }
   std::unordered_map<int, std::unordered_map<int, Float_t>> p_evaluation_value; //<new hit, <recon track, value>>
@@ -80,7 +80,7 @@ std::unordered_map<int, std::vector<std::pair<int,three_vector>>> TrackReconstru
     if(comp_sign[key] == 1){continue;}
     Float_t minimum_value = 10000000;
     for(size_t i = 0; i<new_layer.size(); i++){
-      three_vector new_hit = new_layer.at(i).second;
+      two_vector new_hit = new_layer.at(i).second;
       //point
       if(ref_value[key] == -1){
         Float_t length = Length(hit.back().second, new_hit);
