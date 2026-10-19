@@ -30,44 +30,44 @@ int main(int argc, char* argv[]){
   //////////////////////
   HITSTreeReader SWDhits(tree, target_event);
 
-  std::unordered_map<int,std::vector<std::pair<Int_t,charge_three_vector>>> hits_by_module = SWDhits.GetAllHits();
+  std::unordered_map<int,std::vector<std::pair<Int_t,charge_two_vector>>> hits_by_module_ZY = SWDhits.GetAllHitsZY();
 
   //////////////
   //Merge Hits//
   //////////////
   HitMerger hit_merger;
-  std::unordered_map<int, std::vector<std::pair<int, three_vector>>> merged_hits_by_module;
-  for(const auto& [key, cp] : hits_by_module){
-    merged_hits_by_module[key] = hit_merger.Merge(cp);
+  std::unordered_map<int, std::vector<std::pair<int, two_vector>>> merged_hits_by_module_ZY;
+  for(const auto& [key, cp] : hits_by_module_ZY){
+    merged_hits_by_module_ZY[key] = hit_merger.Merge(cp);
   }
 
   /////////////
   //Sort hits//
   /////////////
-  std::vector<std::vector<std::pair<int, three_vector>>> sorted_hits;
+  std::vector<std::vector<std::pair<int, two_vector>>> sorted_hits_ZY;
   std::vector<int> keys;
-  for(const auto& [key, hits] : merged_hits_by_module){
+  for(const auto& [key, hits] : merged_hits_by_module_ZY){
     keys.push_back(key);
   }
   std::sort(keys.begin(), keys.end(), std::greater<int>());
   for(const auto& key : keys){
-    sorted_hits.push_back(merged_hits_by_module.at(key));
+    sorted_hits_ZY.push_back(merged_hits_by_module_ZY.at(key));
   }
 
   //////////////////
   //Reconstruction//
   //////////////////
   TrackReconstructor track_reconstructor;
-  std::unordered_map<int, std::vector<std::pair<int, three_vector>>> recon_track = track_reconstructor.Reconstruct(sorted_hits);
+  std::unordered_map<int, std::vector<std::pair<int, two_vector>>> recon_track_ZY = track_reconstructor.Reconstruct(sorted_hits_ZY);
 
 
   ////////
   //Plot//
   ////////
   Plotter plotevent;
-  plotevent.SetPrimaryHitsZY(SWDhits.GetPrimaryHits());
-  plotevent.SetNotPrimaryHitsZY(SWDhits.GetNotPrimaryHits());
-  plotevent.SetReconTrack(recon_track);
+  plotevent.SetPrimaryHitsZY(SWDhits.GetPrimaryHitsZY());
+  plotevent.SetNotPrimaryHitsZY(SWDhits.GetNotPrimaryHitsZY());
+  plotevent.SetReconTrackZY(recon_track_ZY);
 
   //plotevent.PlotTrueZY();
   plotevent.PlotTrueAndReconZY();
