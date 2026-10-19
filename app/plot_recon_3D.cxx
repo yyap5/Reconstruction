@@ -9,6 +9,7 @@
 #include "HITSTreeReader.hxx"
 #include "Plotter.hxx"
 #include "Sort.hxx"
+#include "Recon3D.hxx"
 
 
 int main(int argc, char* argv[]){
@@ -78,11 +79,13 @@ int main(int argc, char* argv[]){
   plotevent.SetNotPrimaryHitsZX(SWDhits.GetNotPrimaryHitsZX());
   plotevent.SetReconTrackZY(recon_track_ZY);
   plotevent.SetReconTrackZX(recon_track_ZX);
+  plotevent.Set3DReconTrack(matched_track);
 
   //plotevent.PlotTrueZY();
   //plotevent.PlotTrueZX();
   //plotevent.PlotTrueAndReconZY();
-  plotevent.PlotTrueAndReconZX();
+  //plotevent.PlotTrueAndReconZX();
+  plotevent.Plot3DReconZY();
 
   app.Run();
   return 0;

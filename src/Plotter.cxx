@@ -60,6 +60,49 @@ void Plotter::SetTracks(
 
 }
 
+void Plotter::Set3DReconTrack(
+    const std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>>& recon3Dhits){
+
+  //recon track color table
+  int colors[] = {
+    kRed,
+    kBlue,
+    kGreen+2,
+    kMagenta,
+    kCyan+1,
+    kOrange+1,
+    kViolet,
+    kAzure+1
+  };
+
+  int icolor = 0;
+  for(const auto& x_y_hits : recon3Dhits){
+    TGraph *g_zy = new TGraph();
+    TGraph *g_zx = new TGraph();
+    int ip=0;
+    for(const auto& hit : x_y_hits.first){
+      g_zy->SetPoint(ip, hit.x, hit.y);
+      ip++;
+    }
+    ip=0;
+    for(const auto& hit : x_y_hits.second){
+      g_zx->SetPoint(ip, hit.x, hit.y);
+      ip++;
+    }
+    g_zy->SetLineColor(colors[icolor]);
+    g_zx->SetLineColor(colors[icolor]);
+    g_zy->SetLineWidth(3);
+    g_zx->SetLineWidth(3);
+    gs_3DreconZY.push_back(g_zy);
+    gs_3DreconZX.push_back(g_zx);
+
+    icolor++;
+    if(icolor >= 8) icolor=0;
+
+  }
+
+}
+
 void Plotter::SetReconTrackZY(
     const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_track){
   SetTracks(recon_track, gs_reconZY);
@@ -130,6 +173,14 @@ void Plotter::PlotTrueZY(){
 
 void Plotter::PlotTrueZX(){
   PlotTrue(g_primaryZX, g_notprimaryZX, "X");
+}
+
+void Plotter::Plot3DReconZY(){
+  PlotTrueAndRecon(g_primaryZY, g_notprimaryZY, gs_3DreconZY, "Y");
+}
+
+void Plotter::Plot3DReconZX(){
+  PlotTrueAndRecon(g_primaryZX, g_notprimaryZX, gs_3DreconZX, "X");
 }
 
 

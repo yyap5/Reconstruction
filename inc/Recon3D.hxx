@@ -1,10 +1,19 @@
 #ifndef RECON3D_HXX
 #define RECON3D_HXX
 
+#include <vector>
+#include <utility>
+#include <unordered_map>
+#include <cmath>
+#include <iostream>
+
+
+#include "DataTypes.hxx"
+
 class Recon3D{
   public:
 
-    Recon() = default;
+    Recon3D() = default;
 
     std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> Match(
         const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_ZX, const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_ZY

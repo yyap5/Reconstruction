@@ -28,6 +28,9 @@ class Plotter{
     void SetNotPrimaryHitsZX(const std::vector<two_vector>& hits);
     void SetReconTrackZX(const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& hits);
 
+    //Setting 3D recon track
+    void Set3DReconTrack(const std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>>& hits);
+
     //Plotting ZY plane
     void PlotTrueAndReconZY();
     void PlotTrueZY();
@@ -35,6 +38,10 @@ class Plotter{
     //Plotting ZX plane
     void PlotTrueAndReconZX();
     void PlotTrueZX();
+
+    //Plotting 3D recon
+    void Plot3DReconZY();
+    void Plot3DReconZX();
 
   private:
 
@@ -54,6 +61,10 @@ class Plotter{
     TGraph *g_primaryZX = new TGraph;
     TGraph *g_notprimaryZX = new TGraph;
     std::vector<TGraph*> gs_reconZX;
+
+    //for 3D recon track
+    std::vector<TGraph*> gs_3DreconZY;
+    std::vector<TGraph*> gs_3DreconZX;
 };
 
 #endif
