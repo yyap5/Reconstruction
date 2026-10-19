@@ -9,6 +9,7 @@
 #include <TMultiGraph.h>
 #include <TCanvas.h>
 #include <TLegend.h>
+#include <TString.h>
 
 #include "DataTypes.hxx"
 
@@ -17,18 +18,42 @@ class Plotter{
 
     Plotter() = default;
 
-    void SetPrimaryHitsZY(const std::vector<three_vector>& hits);
-    void SetNotPrimaryHitsZY(const std::vector<three_vector>& hits);
-    void SetReconTrack(const std::unordered_map<int, std::vector<std::pair<int, three_vector>>>& hits);
+    //Setting ZY Points
+    void SetPrimaryHitsZY(const std::vector<two_vector>& hits);
+    void SetNotPrimaryHitsZY(const std::vector<two_vector>& hits);
+    void SetReconTrackZY(const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& hits);
 
+    //Setting ZX Points
+    void SetPrimaryHitsZX(const std::vector<two_vector>& hits);
+    void SetNotPrimaryHitsZX(const std::vector<two_vector>& hits);
+    void SetReconTrackZX(const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& hits);
+
+    //Plotting ZY plane
     void PlotTrueAndReconZY();
     void PlotTrueZY();
 
+    //Plotting ZX plane
+    void PlotTrueAndReconZX();
+    void PlotTrueZX();
+
   private:
 
+    void SetHits(const std::vector<two_vector>& hits, TGraph *g);
+    void SetTracks(const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& hits, std::vector<TGraph*> g_vector);
+
+    void PlotTrueAndRecon(TGraph *g_primary, TGraph *g_notprimary, std::vector<TGraph*> g_vector, const char* yaxis);
+    void PlotTrue(TGraph *g_primary, TGraph *g_notprimary, const char* yaxis);
+
+
+    //for ZY plane
     TGraph *g_primaryZY = new TGraph;
     TGraph *g_notprimaryZY = new TGraph;
     std::vector<TGraph*> gs_reconZY;
+
+    //for ZX plane
+    TGraph *g_primaryZX = new TGraph;
+    TGraph *g_notprimaryZX = new TGraph;
+    std::vector<TGraph*> gs_reconZX;
 };
 
 #endif

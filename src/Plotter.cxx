@@ -1,31 +1,34 @@
 #include "Plotter.hxx"
 
-void Plotter::SetPrimaryHitsZY(const std::vector<three_vector>& hits){
+//Setting Points
+void Plotter::SetHits(const std::vector<two_vector>& hits, TGraph *g){
   int ip = 0;
-
   for(const auto& h : hits){
-    g_primaryZY->SetPoint(ip, h.z, h.y);
+    g->SetPoint(ip, h.x, h.y);
     ip++;
   }
-  g_primaryZY->SetMarkerSize(0.4);
-  g_primaryZY->SetMarkerStyle(20);
-
+  g->SetMarkerSize(0.4);
+  g->SetMarkerStyle(20);
 }
 
-void Plotter::SetNotPrimaryHitsZY(const std::vector<three_vector>& hits){
-  int ip = 0;
-
-  for(const auto& h : hits){
-    g_notprimaryZY->SetPoint(ip, h.z, h.y);
-    ip++;
-  }
-  g_notprimaryZY->SetMarkerSize(0.4);
-  g_notprimaryZY->SetMarkerStyle(20);
-
+void Plotter::SetPrimaryHitsZY(const std::vector<two_vector>& hits){
+  SetHits(hits, g_primaryZY);
 }
 
-void Plotter::SetReconTrack(
-    const std::unordered_map<int, std::vector<std::pair<int, three_vector>>>& recon_track){
+void Plotter::SetNotPrimaryHitsZY(const std::vector<two_vector>& hits){
+  SetHits(hits, g_notprimaryZY);
+}
+
+void Plotter::SetPrimaryHitsZX(const std::vector<two_vector>& hits){
+  SetHits(hits, g_primaryZX);
+}
+
+void Plotter::SetNotPrimaryHitsZX(const std::vector<two_vector>& hits){
+  SetHits(hits, g_notprimaryZX);
+}
+
+void SetTracks(
+    const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_track, std::vector<TGraph*> g_vector){
 
   //recon track color table
   int colors[] = {
@@ -44,12 +47,12 @@ void Plotter::SetReconTrack(
     TGraph *g = new TGraph();
     int ip=0;
     for(const auto& hit : hits){
-      g->SetPoint(ip, hit.second.z, hit.second.y);
+      g->SetPoint(ip, hit.second.x, hit.second.y);
       ip++;
     }
     g->SetLineColor(colors[icolor]);
     g->SetLineWidth(3);
-    gs_reconZY.push_back(g);
+    g_vector.push_back(g);
 
     icolor++;
     if(icolor >=8) icolor=0;
@@ -58,50 +61,76 @@ void Plotter::SetReconTrack(
 
 }
 
-void Plotter::PlotTrueAndReconZY(){
+void Plotter::SetReconTrackZY(
+    const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_track){
+  SetTracks(recon_track, gs_reconZY);
+}
+
+void Plotter::SetReconTrackZX(
+    const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_track){
+  SetTracks(recon_track, gs_reconZX);
+}
+
+void Plotter::PlotTrueAndRecon(TGraph *g_primary, TGraph *g_notprimary, std::vector<TGraph*> g_vector, const char* yaxis){
   TCanvas *c = new TCanvas("c", "recon track", 800, 600);
 
   //set true hits Black
-  g_primaryZY->SetMarkerColor(kBlack);
-  g_notprimaryZY->SetMarkerColor(kBlack);
+  g_primary->SetMarkerColor(kBlack);
+  g_notprimary->SetMarkerColor(kBlack);
 
   TMultiGraph *mg = new TMultiGraph();
 
   //recon track
-  for(auto* g : gs_reconZY){
+  for(auto* g : g_vector){
     mg->Add(g, "L");
   }
 
   //true hits
-  mg->Add(g_primaryZY, "P");
-  mg->Add(g_notprimaryZY, "P");
+  mg->Add(g_primary, "P");
+  mg->Add(g_notprimary, "P");
 
-  mg->SetTitle("Reconstructed tracks;Z [mm];Y [mm]");
+  mg->SetTitle(Form("Reconstructed tracks;Z [mm];%s [mm]", yaxis));
   mg->Draw("A");
 
   c->Update();
 }
 
-void Plotter::PlotTrueZY(){
+void Plotter::PlotTrue(TGraph *g_primary, TGraph *g_notprimary, const char* yaxis){
   TCanvas *c = new TCanvas("c", "recon track", 800, 600);
   //set primary->red , not->black
-  g_primaryZY->SetMarkerColor(kRed);
-  g_notprimaryZY->SetMarkerColor(kCyan);
+  g_primary->SetMarkerColor(kRed);
+  g_notprimary->SetMarkerColor(kCyan);
 
   TMultiGraph *mg = new TMultiGraph();
-  mg->Add(g_primaryZY, "P");
-  mg->Add(g_notprimaryZY, "P");
+  mg->Add(g_primary, "P");
+  mg->Add(g_notprimary, "P");
 
-  mg->SetTitle("True Hits; Z [mm];Y [mm]");
+  mg->SetTitle(Form("True Hits; Z [mm];%s [mm]", yaxis));
   mg->Draw("A");
 
   TLegend *leg = new TLegend(0.7, 0.8, 0.9, 0.89);
-  leg->AddEntry(g_primaryZY, "primary hit", "p");
-  leg->AddEntry(g_notprimaryZY, "not primary hit", "p");
+  leg->AddEntry(g_primary, "primary hit", "p");
+  leg->AddEntry(g_notprimary, "not primary hit", "p");
   leg->SetBorderSize(0);
   leg->Draw();
 
   c->Update();
+}
+
+void Plotter::PlotTrueAndReconZY(){
+  PlotTrueAndRecon(g_primaryZY, g_notprimaryZY, gs_reconZY, "Y");
+}
+
+void Plotter::PlotTrueAndReconZX(){
+  PlotTrueAndRecon(g_primaryZX, g_notprimaryZX, gs_reconZX, "X");
+}
+
+void Plotter::PlotTrueZY(){
+  PlotTrue(g_primaryZY, g_notprimaryZY, "Y");
+}
+
+void Plotter::PlotTrueZX(){
+  PlotTrue(g_primaryZX, g_notprimaryZX, "X");
 }
 
 
