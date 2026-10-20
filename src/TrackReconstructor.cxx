@@ -120,12 +120,19 @@ std::unordered_map<int, std::vector<std::pair<int,two_vector>>> TrackReconstruct
 
     std::pair<int, int> connected_key = MinMap(l_evaluation_value);
     recon_track[connected_key.second].push_back(std::make_pair(new_layer.at(connected_key.first).first, new_layer.at(connected_key.first).second));
+    //Remove connected hit from all maps
     l_evaluation_value.erase(connected_key.first);
     for(auto& [nkey, n_map] : l_evaluation_value){
       n_map.erase(connected_key.second);
     }
     p_evaluation_value.erase(connected_key.first);
+    for(auto& [nkey, n_map] : p_evaluation_value){
+      n_map.erase(connected_key.second);
+    }
     ad_evaluation_value.erase(connected_key.first);
+    for(auto& [nkey, n_map] : ad_evaluation_value){
+      n_map.erase(connected_key.second);
+    }
 
   }
   //point
@@ -144,7 +151,13 @@ std::unordered_map<int, std::vector<std::pair<int,two_vector>>> TrackReconstruct
       n_map.erase(connected_key.second);
     }
     l_evaluation_value.erase(connected_key.first);
+    for(auto& [nkey, n_map] : l_evaluation_value){
+      n_map.erase(connected_key.second);
+    }
     ad_evaluation_value.erase(connected_key.first);                                                   
+    for(auto& [nkey, n_map] : ad_evaluation_value){
+      n_map.erase(connected_key.second);
+    }
   }
   //merged point use the slope (~45 deg)
   while(1){
@@ -162,7 +175,13 @@ std::unordered_map<int, std::vector<std::pair<int,two_vector>>> TrackReconstruct
       n_map.erase(connected_key.second);
     }
     l_evaluation_value.erase(connected_key.first);
+    for(auto& [nkey, n_map] : l_evaluation_value){
+      n_map.erase(connected_key.second);
+    }
     p_evaluation_value.erase(connected_key.first);
+    for(auto& [nkey, n_map] : p_evaluation_value){
+      n_map.erase(connected_key.second);
+    }
 
   }
   //generate new track
