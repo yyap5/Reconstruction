@@ -20,8 +20,8 @@ std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> Recon3D
 
   for(const auto& [key_ZX, v_ZX] : recon_ZX_p){
     for(const auto& [key_ZY, v_ZY] : recon_ZY_p){
-      if(std::fabs(v_ZX.first - v_ZY.first) > 15.){continue;}
-      if(std::fabs(v_ZX.second - v_ZY.second) > 15.){continue;}
+      if(std::fabs(v_ZX.first - v_ZY.first) > fMatchingLength){continue;}
+      if(std::fabs(v_ZX.second - v_ZY.second) > fMatchingLength){continue;}
       if(recon_ZY.at(key_ZY).size()<2){continue;}
       if(recon_ZX.at(key_ZX).size()<2){continue;}
       matched_track.push_back(std::make_pair(pair_to_vec(recon_ZY.at(key_ZY)), pair_to_vec(recon_ZX.at(key_ZX))));
