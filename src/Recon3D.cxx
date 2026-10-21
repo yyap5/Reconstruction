@@ -69,7 +69,7 @@ std::unordered_map<int, std::unordered_map<int, Int_t>> Recon3D::CalMatchingScor
 
   for(const auto& [keyZX, hitsZX] : ZX){
     for(const auto& [keyZY, hitsZY] : ZY){
-      matching_score_map[keyZX][key_ZY] = CalOverlapNum(hitsZX, hitsZY);
+      matching_score_map[keyZX][keyZY] = CalOverlapNum(hitsZX, hitsZY);
     }
   }
 
@@ -83,7 +83,7 @@ Int_t Recon3D::CalOverlapNum(
   Int_t score = 0;
   for(const auto& hita : a){
     for(const auto& hitb : b){
-      if(std::fabs(a.x - b.x) < 1){score++;}
+      if(std::fabs(hita.x - hitb.x) < 1){score++;}
     }
   }
   return score;
@@ -116,8 +116,8 @@ std::pair<std::vector<two_vector>, std::vector<two_vector>> Recon3D::MakeTrack(
   for(const auto& hitZX : ZX.at(matchingID.first)){
     for(const auto& hitZY : ZY.at(matchingID.second)){
       if(std::fabs(hitZX.x - hitZY.x) < 1){
-        madeZX.push_back(ZX.at(matchingID.first));
-        madeZY.push_back(ZY.at(matchingID.second));
+        madeZX.push_back(hitZX);
+        madeZY.push_back(hitZY);
       }
     }
   }
@@ -131,8 +131,8 @@ std::pair<std::vector<two_vector>, std::vector<two_vector>> Recon3D::MakeTrack(
   ExtractRemainTrack(madeZY, ZY.at(matchingID.second), new_remainTrackZYfirst, new_remainTrackZYsecond);
 
   //delete matched track
-  madeZX.erase(matchingID.first);
-  madeZY.erase(matchingID.second);
+  ZX.erase(matchingID.first);
+  ZY.erase(matchingID.second);
   //push new remain tracks
   if(!new_remainTrackZXfirst.empty()){ZX.emplace(GetUniqueKey(ZX), new_remainTrackZXfirst);}
   if(!new_remainTrackZXsecond.empty()){ZX.emplace(GetUniqueKey(ZX), new_remainTrackZXsecond);}
@@ -152,7 +152,7 @@ void Recon3D::ExtractRemainTrack(
 
   for(const auto& old : old_remain){
     bool used_f = false;
-    for(const auto& : ref : ref_track){
+    for(const auto& ref : ref_track){
       if(std::fabs(old.x - ref.x) < 1){used_f = true;}
     }
     if(used_f == false){
