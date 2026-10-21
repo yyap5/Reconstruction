@@ -50,7 +50,9 @@ std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> Recon3D
   }
 
   for(const auto& [key_ZX, v_ZX] : recon_ZX_p){
+    if(recon_ZX.find(key_ZX) == recon_ZX.end()) continue;
     for(const auto& [key_ZY, v_ZY] : recon_ZY_p){
+      if(recon_ZY.find(key_ZY) == recon_ZY.end()) continue;
       if(std::fabs(v_ZX.first - v_ZY.first) > fMatchingLength){continue;}
       if(std::fabs(v_ZX.second - v_ZY.second) > fMatchingLength){continue;}
       if(recon_ZY.at(key_ZY).size()<2){continue;}
@@ -59,6 +61,7 @@ std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> Recon3D
       //delete matched track
       recon_ZY.erase(key_ZY);
       recon_ZX.erase(key_ZX);
+      break;
     }
   }
 
