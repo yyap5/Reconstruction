@@ -32,21 +32,62 @@ std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> Recon3D
 
 }
 
+std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> Recon3D::MatchForRecon(
+    std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_ZX, std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_ZY
+    ){
+
+  std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> matched_track;
+
+  std::unordered_map<int, std::pair<Float_t, Float_t>> recon_ZX_p;
+  std::unordered_map<int, std::pair<Float_t, Float_t>> recon_ZY_p;
+
+  for(const auto& [key, hits] : recon_ZX){
+    recon_ZX_p[key] = GetStartEnd(pair_to_vec(hits));
+  }
+
+  for(const auto& [key, hits] : recon_ZY){
+    recon_ZY_p[key] = GetStartEnd(pair_to_vec(hits));
+  }
+
+  for(const auto& [key_ZX, v_ZX] : recon_ZX_p){
+    for(const auto& [key_ZY, v_ZY] : recon_ZY_p){
+      if(std::fabs(v_ZX.first - v_ZY.first) > fMatchingLength){continue;}
+      if(std::fabs(v_ZX.second - v_ZY.second) > fMatchingLength){continue;}
+      if(recon_ZY.at(key_ZY).size()<2){continue;}
+      if(recon_ZX.at(key_ZX).size()<2){continue;}
+      matched_track.push_back(std::make_pair(pair_to_vec(recon_ZY.at(key_ZY)), pair_to_vec(recon_ZX.at(key_ZX))));
+      //delete matched track
+      recon_ZY.erase(key_ZY);
+      recon_ZX.erase(key_ZX);
+    }
+  }
+
+  return matched_track;
+
+}
+
 std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> Recon3D::Recon(
     const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_ZX, const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_ZY
     ){
 
   //return
-  std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> matched_track;
+  std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> temp_matched_track;
+
+  //pre matching 
+  //for tracks completely having the same starting/ending points
+  std::unordered_map<int, std::vector<std::pair<int, two_vector>>> temp_recon_ZX = recon_ZX;
+  std::unordered_map<int, std::vector<std::pair<int, two_vector>>> temp_recon_ZY = recon_ZY;
+  std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> matched_track
+    = MatchForRecon(temp_recon_ZX, temp_recon_ZY);
 
   std::unordered_map<int, std::vector<two_vector>> recon_remain_ZX;
   std::unordered_map<int, std::vector<two_vector>> recon_remain_ZY;
 
   //setting remaining recon tracks (simple and not const)
-  for(const auto& [key, hits] : recon_ZX){
+  for(const auto& [key, hits] : temp_recon_ZX){
     recon_remain_ZX[key] = pair_to_vec(hits);
   }
-  for(const auto& [key, hits] : recon_ZY){
+  for(const auto& [key, hits] : temp_recon_ZY){
     recon_remain_ZY[key] = pair_to_vec(hits);
   }
 
@@ -55,7 +96,13 @@ std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> Recon3D
   while(true){
     matching_score_map = CalMatchingScoreMap(recon_remain_ZX, recon_remain_ZY);
     if(!CalMaxScore(matching_score_map, max_matching_track)){break;}
-    matched_track.push_back(MakeTrack(max_matching_track, recon_remain_ZX, recon_remain_ZY));
+    temp_matched_track.push_back(MakeTrack(max_matching_track, recon_remain_ZX, recon_remain_ZY));
+  }
+
+  // Stupid 
+  // I mistook the order of the recon ZX ZY....
+  for(const auto& temp : temp_matched_track){
+    matched_track.push_back(std::make_pair(temp.second, temp.first));
   }
 
   return matched_track;

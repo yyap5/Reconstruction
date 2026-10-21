@@ -46,6 +46,12 @@ class Recon3D{
     std::pair<Float_t, Float_t> GetStartEnd(const std::vector<two_vector>& track);
     std::vector<two_vector> pair_to_vec(const std::vector<std::pair<int, two_vector>>& pv);
 
+    //this is almost same of the public function "Match" but recreate recon_** after matching
+    //for the whole 3D recon (for public function "Recon")
+    std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> MatchForRecon(
+        std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_ZX, std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_ZY
+        );
+
     std::unordered_map<int, std::unordered_map<int, Int_t>> CalMatchingScoreMap(
         const std::unordered_map<int, std::vector<two_vector>>& ZX, std::unordered_map<int, std::vector<two_vector>>& ZY
         );
