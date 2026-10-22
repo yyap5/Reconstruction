@@ -15,7 +15,7 @@ class Recon3D{
 
     Recon3D(){
       fMatchingLength = (2*fMatchingLayerNumber - 1) * 10 + 5;
-      fMatchingOverlapThreshold = 2;
+      fMatchingOverlapThreshold = 3;
     }
 
     std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> Match(
@@ -41,6 +41,9 @@ class Recon3D{
     //dont tune this number directly, the number is setted automatically
     Float_t fMatchingLength;
 
+    //for "public Recon" function, this value decide the threshold number of overlap hits.
+    //this should be more than 3 because "2" would be achieved when there are one Xlayer hit and 
+    //two Y layer hits.
     Int_t fMatchingOverlapThreshold;
 
     std::pair<Float_t, Float_t> GetStartEnd(const std::vector<two_vector>& track);

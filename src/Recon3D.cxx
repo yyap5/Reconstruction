@@ -133,7 +133,7 @@ Int_t Recon3D::CalOverlapNum(
   Int_t score = 0;
   for(const auto& hita : a){
     for(const auto& hitb : b){
-      if(std::fabs(hita.x - hitb.x) < 1){score++;}
+      if(std::fabs(hita.x - hitb.x) < 11){score++;}
     }
   }
   return score;
@@ -165,7 +165,7 @@ std::pair<std::vector<two_vector>, std::vector<two_vector>> Recon3D::MakeTrack(
 
   for(const auto& hitZX : ZX.at(matchingID.first)){
     for(const auto& hitZY : ZY.at(matchingID.second)){
-      if(std::fabs(hitZX.x - hitZY.x) < 1){
+      if(std::fabs(hitZX.x - hitZY.x) < 11){
         madeZX.push_back(hitZX);
         madeZY.push_back(hitZY);
       }
