@@ -10,6 +10,9 @@ std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> Recon3D
   std::unordered_map<int, std::pair<Float_t, Float_t>> recon_ZX_p;
   std::unordered_map<int, std::pair<Float_t, Float_t>> recon_ZY_p;
 
+  std::set<int> used_ZX;
+  std::set<int> used_ZY;
+
   for(const auto& [key, hits] : recon_ZX){
     recon_ZX_p[key] = GetStartEnd(pair_to_vec(hits));
   }
@@ -24,7 +27,10 @@ std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> Recon3D
       if(std::fabs(v_ZX.second - v_ZY.second) > fMatchingLength){continue;}
       if(recon_ZY.at(key_ZY).size()<2){continue;}
       if(recon_ZX.at(key_ZX).size()<2){continue;}
+      if(used_ZX.find(key_ZX)!=used_ZX.end() or used_ZY.find(key_ZY)!=used_ZY.end()){continue;}
       matched_track.push_back(std::make_pair(pair_to_vec(recon_ZY.at(key_ZY)), pair_to_vec(recon_ZX.at(key_ZX))));
+      used_ZX.insert(key_ZX);
+      used_ZY.insert(key_ZY);
     }
   }
 
@@ -40,6 +46,9 @@ std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> Recon3D
 
   std::unordered_map<int, std::pair<Float_t, Float_t>> recon_ZX_p;
   std::unordered_map<int, std::pair<Float_t, Float_t>> recon_ZY_p;
+
+  std::set<int> used_ZX;
+  std::set<int> used_ZY;
 
   for(const auto& [key, hits] : recon_ZX){
     recon_ZX_p[key] = GetStartEnd(pair_to_vec(hits));
@@ -57,7 +66,11 @@ std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> Recon3D
       if(std::fabs(v_ZX.second - v_ZY.second) > fMatchingLength){continue;}
       if(recon_ZY.at(key_ZY).size()<2){continue;}
       if(recon_ZX.at(key_ZX).size()<2){continue;}
+      if(used_ZX.find(key_ZX)!=used_ZX.end() or used_ZY.find(key_ZY)!=used_ZY.end()){continue;}
       matched_track.push_back(std::make_pair(pair_to_vec(recon_ZY.at(key_ZY)), pair_to_vec(recon_ZX.at(key_ZX))));
+      //insert used track
+      used_ZX.insert(key_ZX);
+      used_ZY.insert(key_ZY);
       //delete matched track
       recon_ZY.erase(key_ZY);
       recon_ZX.erase(key_ZX);
