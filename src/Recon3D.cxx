@@ -1,6 +1,15 @@
 #include "Recon3D.hxx"
 
 
+void Recon3D::SetMatchingLayerNumber(Int_t value){
+  fMatchingLength = (2 * value - 1) * 10 +5;
+}
+
+void Recon3D::SetMatchingOverlapThreshold(Int_t value){
+  fMatchingOverlapThreshold = value;
+}
+
+
 std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> Recon3D::Match(
     const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_ZX, const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_ZY
     ){

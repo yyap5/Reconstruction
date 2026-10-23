@@ -19,6 +19,9 @@ class Recon3D{
       fMatchingOverlapThreshold = 3;
     }
 
+    void SetMatchingLayerNumber(Int_t value);
+    void SetMatchingOverlapThreshold(Int_t value);
+
     std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> Match(
         const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_ZX, const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_ZY
         );

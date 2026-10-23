@@ -19,6 +19,10 @@ class TrackReconstructor{
       fMaxLength = 25.;
     }
 
+    void SetMaxSlopeChange(Float_t value);
+    void SetMaxSlopeChangeAdjacent(Float_t value);
+    void SetMaxLength(Float_t value);
+
     std::unordered_map<int, std::vector<std::pair<int, two_vector>>> Reconstruct(
         const std::vector<std::vector<std::pair<int, two_vector>>>& layers
         );

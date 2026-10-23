@@ -1,5 +1,16 @@
 #include "TrackReconstructor.hxx"
 
+void TrackReconstructor::SetMaxSlopeChange(Float_t value){
+  fMaxSlopeChange = value * M_PI / 180.;
+}
+
+void TrackReconstructor::SetMaxSlopeChangeAdjacent(Float_t value){
+  fMaxSlopeChangeAdjacent = value * M_PI / 180.;
+}
+void TrackReconstructor::SetMaxLength(Float_t value){
+  fMaxLength = value;
+}
+
 
 
 std::unordered_map<int, std::vector<std::pair<int, two_vector>>> TrackReconstructor::Reconstruct(
@@ -48,7 +59,7 @@ std::pair<int, int> TrackReconstructor::MinMap(std::unordered_map<int, std::unor
 }
 
 std::unordered_map<int, std::vector<std::pair<int,two_vector>>> TrackReconstructor::ReconstructLayer(
-      std::unordered_map<int, std::vector<std::pair<int, two_vector>>> recon_track, const std::vector<std::pair<int, two_vector>>& new_layer
+    std::unordered_map<int, std::vector<std::pair<int, two_vector>>> recon_track, const std::vector<std::pair<int, two_vector>>& new_layer
     ){
 
   std::unordered_map<int, Float_t> ref_value;
