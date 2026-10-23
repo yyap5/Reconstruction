@@ -1,0 +1,9 @@
+#TrackReconstructor settings
+
+TrackReconstructor/MaxSlopeChange 20.
+TrackReconstructor/MaxSlopeChangeAdjacent 10.
+TrackReconstructor/MaxLength 50.
+
+#Recon3D settings
+Recon3D/MatchingLayerNumber 1
+Recon3D/MatchingOverlapThreshold 3
