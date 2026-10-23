@@ -1,11 +1,6 @@
 #include "TrackReconstructor.hxx"
 
 
-TrackReconstructor::TrackReconstructor(){
-  fMaxSlopeChange = 15. * M_PI / 180.;
-  fMaxSlopeChangeAdjacent = 5. * M_PI / 180.;
-  fMaxLength = 25.;
-}
 
 std::unordered_map<int, std::vector<std::pair<int, two_vector>>> TrackReconstructor::Reconstruct(
     const std::vector<std::vector<std::pair<int, two_vector>>>& layers

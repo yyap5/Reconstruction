@@ -13,7 +13,11 @@ class TrackReconstructor{
 
   public:
 
-    TrackReconstructor();
+    TrackReconstructor(){
+      fMaxSlopeChange = 15. * M_PI / 180.;
+      fMaxSlopeChangeAdjacent = 5. * M_PI / 180.;
+      fMaxLength = 25.;
+    }
 
     std::unordered_map<int, std::vector<std::pair<int, two_vector>>> Reconstruct(
         const std::vector<std::vector<std::pair<int, two_vector>>>& layers
@@ -33,7 +37,7 @@ class TrackReconstructor{
     std::pair<int, int> MinMap(std::unordered_map<int, std::unordered_map<int, Float_t>> map);
 
     std::unordered_map<int, std::vector<std::pair<int,two_vector>>> ReconstructLayer(
-         std::unordered_map<int, std::vector<std::pair<int, two_vector>>> recon_track, const std::vector<std::pair<int, two_vector>>& new_layer
+        std::unordered_map<int, std::vector<std::pair<int, two_vector>>> recon_track, const std::vector<std::pair<int, two_vector>>& new_layer
         );
 
 };
