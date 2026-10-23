@@ -11,6 +11,8 @@ class HITSTreeReader{
   public:
     HITSTreeReader(TTree* hits, int event_num) : tree(hits), target_event(event_num) {Initialize();}
 
+    three_vector GetVertex(){return fVertex;}
+
     std::vector<two_vector> GetPrimaryHitsZY(){return fPrimaryHitsZY;}
     std::vector<two_vector> GetNotPrimaryHitsZY(){return fNotPrimaryHitsZY;}
     std::vector<two_vector> GetProtonHitsZY(){return fProtonHitsZY;}
@@ -31,6 +33,8 @@ class HITSTreeReader{
   private:
     TTree* tree;
     int target_event;
+
+    three_vector fVertex;
 
     std::vector<two_vector> fPrimaryHitsZY;
     std::vector<two_vector> fNotPrimaryHitsZY;

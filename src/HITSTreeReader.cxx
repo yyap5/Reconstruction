@@ -1,4 +1,5 @@
 #include "HITSTreeReader.hxx"
+#include <iostream>
 
 void HITSTreeReader::Initialize(){
 
@@ -34,6 +35,7 @@ void HITSTreeReader::Initialize(){
 
 
   int nentries = tree->GetEntries();
+  Int_t ref_trackID = 1000;
   for(int i=0; i<nentries; i++){
     tree->GetEntry(i);
     if(event != target_event){continue;}
@@ -48,6 +50,11 @@ void HITSTreeReader::Initialize(){
       if(std::abs(PDG) == 11 or PDG == 22){fElectronHitsZY.push_back(two_vector{pos.z, pos.y});}
       if(std::abs(PDG) == 13){fMuonHitsZY.push_back(two_vector{pos.z, pos.y});}
       if(std::abs(PDG) == 211){fPionHitsZY.push_back(two_vector{pos.z, pos.y});}
+      //vertex
+      if(trackId == primaryTrackId and trackId < ref_trackID){
+        ref_trackID = trackId;
+        fVertex = {primaryVertex.x, primaryVertex.y, primaryVertex.z};
+      }
     }
 
     //for ZX plane
@@ -60,7 +67,11 @@ void HITSTreeReader::Initialize(){
       if(std::abs(PDG) == 11 or PDG == 22){fElectronHitsZX.push_back(two_vector{pos.z, pos.x});}
       if(std::abs(PDG) == 13){fMuonHitsZX.push_back(two_vector{pos.z, pos.x});}
       if(std::abs(PDG) == 211){fPionHitsZX.push_back(two_vector{pos.z, pos.x});}
+      //vertex
+      if(trackId == primaryTrackId and trackId < ref_trackID){
+        ref_trackID = trackId;
+        fVertex = {primaryVertex.x, primaryVertex.y, primaryVertex.z};
+      }
     }
-
   }
 }
