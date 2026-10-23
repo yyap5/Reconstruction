@@ -10,11 +10,12 @@
 #include "Plotter.hxx"
 #include "Sort.hxx"
 #include "Recon3D.hxx"
+#include "ParameterMessenger.hxx"
 
 
 int main(int argc, char* argv[]){
   TApplication app("app", &argc, argv);
-  if(argc != 3){
+  if(argc != 3 and argc != 4){
     std::cout << "# arguments is wrong." << std::endl;
     return 1;
   }
@@ -27,6 +28,18 @@ int main(int argc, char* argv[]){
   TFile* _file0 = TFile::Open(Form("/home/daiki/yasushi/nd280/mc/Pgun/monoEmonoDir/e-500-pgun/gun_e-_500MeV_%04d_tree.root", target_file));
   TTree* tree = (TTree*)_file0->Get("swdhits");
 
+  HitMerger hit_merger;
+  Sort sort_hits;
+  TrackReconstructor track_reconstructor;
+  Recon3D track_reconstructor3D;
+  Plotter plotevent;
+  ParameterMessenger messenger;
+  //Read Macro file
+  if(argc == 4){
+    std::string MacroFileName = Form("../Settings/%s", argv[3]);
+    messenger.LoadFile(MacroFileName, track_reconstructor, track_reconstructor3D);
+  }
+
   //////////////////////
   //Read hits and save//
   //////////////////////
@@ -38,7 +51,6 @@ int main(int argc, char* argv[]){
   //////////////
   //Merge Hits//
   //////////////
-  HitMerger hit_merger;
   std::unordered_map<int, std::vector<std::pair<int, two_vector>>> merged_hits_by_module_ZY;
   std::unordered_map<int, std::vector<std::pair<int, two_vector>>> merged_hits_by_module_ZX;
   for(const auto& [key, cp] : hits_by_module_ZY){
@@ -51,14 +63,12 @@ int main(int argc, char* argv[]){
   /////////////
   //Sort hits//
   /////////////
-  Sort sort_hits;
   std::vector<std::vector<std::pair<int, two_vector>>> sorted_hits_ZY = sort_hits.ForwardSort(merged_hits_by_module_ZY);
   std::vector<std::vector<std::pair<int, two_vector>>> sorted_hits_ZX = sort_hits.ForwardSort(merged_hits_by_module_ZX);
 
   //////////////////
   //Reconstruction//
   //////////////////
-  TrackReconstructor track_reconstructor;
   std::unordered_map<int, std::vector<std::pair<int, two_vector>>> recon_track_ZY = track_reconstructor.Reconstruct(sorted_hits_ZY);
   std::unordered_map<int, std::vector<std::pair<int, two_vector>>> recon_track_ZX = track_reconstructor.Reconstruct(sorted_hits_ZX);
 
@@ -66,7 +76,6 @@ int main(int argc, char* argv[]){
   ////////
   //Plot//
   ////////
-  Plotter plotevent;
   plotevent.SetPrimaryHitsZY(SWDhits.GetPrimaryHitsZY());
   plotevent.SetPrimaryHitsZX(SWDhits.GetPrimaryHitsZX());
   plotevent.SetNotPrimaryHitsZY(SWDhits.GetNotPrimaryHitsZY());
