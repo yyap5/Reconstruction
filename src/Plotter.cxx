@@ -27,6 +27,22 @@ void Plotter::SetNotPrimaryHitsZX(const std::vector<two_vector>& hits){
   SetHits(hits, g_notprimaryZX);
 }
 
+void Plotter::SetPIDHitsZY(
+    const std::vector<two_vector>& proton, const std::vector<two_vector>& electron, const std::vector<two_vector>& muon, const std::vector<two_vector>& pion){
+  SetHits(proton, g_protonZY);
+  SetHits(electron, g_electronZY);
+  SetHits(muon, g_muonZY);
+  SetHits(pion, g_pionZY);
+}
+
+void Plotter::SetPIDHitsZX(
+    const std::vector<two_vector>& proton, const std::vector<two_vector>& electron, const std::vector<two_vector>& muon, const std::vector<two_vector>& pion){
+  SetHits(proton, g_protonZX);
+  SetHits(electron, g_electronZX);
+  SetHits(muon, g_muonZX);
+  SetHits(pion, g_pionZX);
+}
+
 void Plotter::SetTracks(
     const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& recon_track, std::vector<TGraph*>& g_vector){
 
@@ -157,6 +173,36 @@ void Plotter::PlotTrue(TGraph *g_primary, TGraph *g_notprimary, const char* yaxi
   leg->Draw();
 
   c->Update();
+}
+void Plotter::PlotPID(
+    TGraph *g_proton, TGraph *g_electron, TGraph *g_muon, TGraph *g_pion, const char* yaxis){
+
+  TCanvas *c = new TCanvas("c", "PID track", 800, 600);
+
+  g_proton->SetMarkerColor(kRed);
+  g_electron->SetMarkerColor(kCyan+1);
+  g_muon->SetMarkerColor(kBlue);
+  g_pion->SetMarkerColor(kGreen+2);
+  
+  TMultiGraph *mg = new TMultiGraph();
+  mg->Add(g_proton, "P");
+  mg->Add(g_electron, "P");
+  mg->Add(g_muon, "P");
+  mg->Add(g_pion, "P");
+
+  mg->SetTitle(Form("True Hits; Z [mm];%s [mm]", yaxis));
+  mg->Draw("A");
+
+  TLegend *leg = new TLegend(0.7, 0.8, 0.9, 0.89);
+  leg->AddEntry(g_proton, "proton", "p");
+  leg->AddEntry(g_electron, "electron", "p");
+  leg->AddEntry(g_muon, "muon", "p");
+  leg->AddEntry(g_pion, "pion", "p");
+  leg->SetBorderSize(0);
+  leg->Draw();
+
+  c->Update();
+
 }
 
 void Plotter::Plot2DTrue(){
@@ -302,6 +348,14 @@ void Plotter::Plot3DReconZY(){
 
 void Plotter::Plot3DReconZX(){
   PlotTrueAndRecon(g_primaryZX, g_notprimaryZX, gs_3DreconZX, "X");
+}
+
+void Plotter::PlotPIDZY(){
+  PlotPID(g_protonZY, g_electronZY, g_muonZY, g_pionZY, "Y");
+}
+
+void Plotter::PlotPIDZX(){
+  PlotPID(g_protonZX, g_electronZX, g_muonZX, g_pionZX, "X");
 }
 
 
