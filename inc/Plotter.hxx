@@ -19,6 +19,9 @@ class Plotter{
 
     Plotter() = default;
 
+    void SetVertexZY(const three_vector& vertex);
+    void SetVertexZX(const three_vector& vertex);
+
     //Setting ZY Points
     void SetPrimaryHitsZY(const std::vector<two_vector>& hits);
     void SetNotPrimaryHitsZY(const std::vector<two_vector>& hits);
@@ -61,7 +64,11 @@ class Plotter{
 
     void PlotTrueAndRecon(TGraph *g_primary, TGraph *g_notprimary, std::vector<TGraph*>& g_vector, const char* yaxis);
     void PlotTrue(TGraph *g_primary, TGraph *g_notprimary, const char* yaxis);
-    void PlotPID(TGraph *g_proton, TGraph *g_electron, TGraph *g_muon, TGraph *g_pion, const char* yaxis);
+    void PlotPID(TGraph *g_proton, TGraph *g_electron, TGraph *g_muon, TGraph *g_pion, TGraph *g_vertex, const char* yaxis);
+
+    //vertex
+    TGraph *g_vertexZY = new TGraph;
+    TGraph *g_vertexZX = new TGraph;
 
 
     //for ZY plane

@@ -27,6 +27,20 @@ void Plotter::SetNotPrimaryHitsZX(const std::vector<two_vector>& hits){
   SetHits(hits, g_notprimaryZX);
 }
 
+void Plotter::SetVertexZY(const three_vector& vertex){
+  g_vertexZY->SetPoint(0, vertex.z, vertex.y);
+  g_vertexZY->SetMarkerStyle(24);
+  g_vertexZY->SetMarkerSize(1.0);
+  g_vertexZY->SetMarkerColor(kBlack);
+}
+
+void Plotter::SetVertexZX(const three_vector& vertex){
+  g_vertexZX->SetPoint(0, vertex.z, vertex.x);
+  g_vertexZX->SetMarkerStyle(24);
+  g_vertexZX->SetMarkerSize(1.0);
+  g_vertexZX->SetMarkerColor(kBlack);
+}
+
 void Plotter::SetPIDHitsZY(
     const std::vector<two_vector>& proton, const std::vector<two_vector>& electron, const std::vector<two_vector>& muon, const std::vector<two_vector>& pion){
   SetHits(proton, g_protonZY);
@@ -175,7 +189,7 @@ void Plotter::PlotTrue(TGraph *g_primary, TGraph *g_notprimary, const char* yaxi
   c->Update();
 }
 void Plotter::PlotPID(
-    TGraph *g_proton, TGraph *g_electron, TGraph *g_muon, TGraph *g_pion, const char* yaxis){
+    TGraph *g_proton, TGraph *g_electron, TGraph *g_muon, TGraph *g_pion, TGraph *g_vertex, const char* yaxis){
 
   TCanvas *c = new TCanvas("c", "PID track", 800, 600);
 
@@ -183,12 +197,15 @@ void Plotter::PlotPID(
   g_electron->SetMarkerColor(kCyan+1);
   g_muon->SetMarkerColor(kBlue);
   g_pion->SetMarkerColor(kGreen+2);
-  
+
   TMultiGraph *mg = new TMultiGraph();
   mg->Add(g_proton, "P");
   mg->Add(g_electron, "P");
   mg->Add(g_muon, "P");
   mg->Add(g_pion, "P");
+
+  //vertex
+  mg->Add(g_vertex, "P");
 
   mg->SetTitle(Form("True Hits; Z [mm];%s [mm]", yaxis));
   mg->Draw("A");
@@ -351,11 +368,11 @@ void Plotter::Plot3DReconZX(){
 }
 
 void Plotter::PlotPIDZY(){
-  PlotPID(g_protonZY, g_electronZY, g_muonZY, g_pionZY, "Y");
+  PlotPID(g_protonZY, g_electronZY, g_muonZY, g_pionZY, g_vertexZY, "Y");
 }
 
 void Plotter::PlotPIDZX(){
-  PlotPID(g_protonZX, g_electronZX, g_muonZX, g_pionZX, "X");
+  PlotPID(g_protonZX, g_electronZX, g_muonZX, g_pionZX, g_vertexZX, "X");
 }
 
 
