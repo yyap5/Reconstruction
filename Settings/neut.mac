@@ -2,7 +2,7 @@
 
 TrackReconstructor/MaxSlopeChange 20.
 TrackReconstructor/MaxSlopeChangeAdjacent 10.
-TrackReconstructor/MaxLength 50.
+TrackReconstructor/MaxLength 25.
 
 #Recon3D settings
 Recon3D/MatchingLayerNumber 1
