@@ -22,6 +22,9 @@ class Plotter{
     void SetVertexZY(const three_vector& vertex);
     void SetVertexZX(const three_vector& vertex);
 
+    void SetReconVertexZY(const three_vector& vertex);
+    void SetReconVertexZX(const three_vector& vertex);
+
     //Setting ZY Points
     void SetPrimaryHitsZY(const std::vector<two_vector>& hits);
     void SetNotPrimaryHitsZY(const std::vector<two_vector>& hits);
@@ -69,6 +72,10 @@ class Plotter{
     //vertex
     TGraph *g_vertexZY = new TGraph;
     TGraph *g_vertexZX = new TGraph;
+
+    //recon vertex
+    TGraph *g_reconvertexZY = new TGraph;
+    TGraph *g_reconvertexZX = new TGraph;
 
 
     //for ZY plane

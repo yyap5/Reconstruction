@@ -41,6 +41,20 @@ void Plotter::SetVertexZX(const three_vector& vertex){
   g_vertexZX->SetMarkerColor(kBlack);
 }
 
+void Plotter::SetReconVertexZY(const three_vector& vertex){
+  g_reconvertexZY->SetPoint(0, vertex.z, vertex.y);
+  g_reconvertexZY->SetMarkerStyle(24);
+  g_reconvertexZY->SetMarkerSize(1.0);
+  g_reconvertexZY->SetMarkerColor(kBlack);
+}
+
+void Plotter::SetReconVertexZX(const three_vector& vertex){
+  g_reconvertexZX->SetPoint(0, vertex.z, vertex.x);
+  g_reconvertexZX->SetMarkerStyle(24);
+  g_reconvertexZX->SetMarkerSize(1.0);
+  g_reconvertexZX->SetMarkerColor(kBlack);
+}
+
 void Plotter::SetPIDHitsZY(
     const std::vector<two_vector>& proton, const std::vector<two_vector>& electron, const std::vector<two_vector>& muon, const std::vector<two_vector>& pion){
   SetHits(proton, g_protonZY);
@@ -327,6 +341,10 @@ void Plotter::Plot3DRecon(){
   mg_ZX->Add(g_notprimaryZX, "P");
   mg_ZY->Add(g_primaryZY, "P");
   mg_ZY->Add(g_notprimaryZY, "P");
+
+  //Add recon vertex
+  mg_ZX->Add(g_reconvertexZX, "P");
+  mg_ZY->Add(g_reconvertexZY, "P");
 
   mg_ZX->SetTitle("Reconstructed tracks;Z [mm];X [mm]");
   mg_ZY->SetTitle("Reconstructed tracks;Z [mm];Y [mm]");
