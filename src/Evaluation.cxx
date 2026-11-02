@@ -1,6 +1,6 @@
 #include "Evaluation.hxx"
 
-std::pair<Float_t, Float_t> Evaluation::CalEffPur( //<efficiency, purity>
+Float_t Evaluation::CalEff( //<efficiency, purity>
     const int& target_event,
     TTree* G4Track, const std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>>& ReconTrack){
 
@@ -14,24 +14,15 @@ std::pair<Float_t, Float_t> Evaluation::CalEffPur( //<efficiency, purity>
   //TrueTrack to Fiber sheet position hits
   std::unordered_map<int, std::vector<three_vector>> TrueFiberHits = 
     GetTrueFiberHits(TrueTrack, FiberPosZ);
-
   //debug
-  for(const auto& match : ReconTrack){
-    std::cout << "----zy----" << std::endl;
-    for(const auto& v : match.first){
-      std::cout << "(" << v.x << ", " << v.y << ")" << std::endl;
-    }
-    std::cout << "----zx----" << std::endl;
-    for(const auto& v : match.second){
-      std::cout << "(" << v.x << ", " << v.y << ")" << std::endl;
+  for(const auto& [key, vec] : TrueFiberHits){
+    std::cout << "key : " << key << std::endl;
+    for(const auto& v : vec){
+      std::cout << "(" << v.x << ", " << v.y << ", " << v.z << ")" << std::endl;
     }
   }
 
-
-
-
-  std::pair<Float_t, Float_t> efpu;
-  return efpu;
+  return GetEfficiency(TrueFiberHits, ReconTrack);
 }
 
 void Evaluation::ReadG4Track( //Read True G4 Track
@@ -118,6 +109,42 @@ three_vector Evaluation::ConvertToFiberHit(
   return three_vector{x, y, z};
 }
 
+Float_t Evaluation::GetEfficiency(
+    const std::unordered_map<int, std::vector<three_vector>>& TrueFiberHits,
+    const std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>>& ReconTrack){
+
+  int true_track_num = 0;
+  int recon_track_num = 0;
+
+  for(const auto& [key, true_vec] : TrueFiberHits){
+    if(true_vec.size() < fThresholdHitNum){continue;}//if #hit < 4, they are not regarded as ture track
+    true_track_num++;
+    //one true track hits num
+    int true_num = static_cast<int>(true_vec.size());
+    //cal the number of the reconstructed hits
+    for(const auto& recon_pair_track : ReconTrack){
+      int recon_hit_num = 0;
+      for(const auto& true_hit : true_vec){
+        for(const auto& zy_hit : recon_pair_track.first){
+          if(GetLen_twov(two_vector{true_hit.z, true_hit.y}, zy_hit) < 1.){recon_hit_num++;}
+        }
+        for(const auto& zx_hit : recon_pair_track.second){
+          if(GetLen_twov(two_vector{true_hit.z, true_hit.x}, zx_hit) < 1.){recon_hit_num++;}
+        }
+      }
+      if((static_cast<Float_t>(recon_hit_num) / true_num) > fReconThresholdRatio){recon_track_num++;break;}
+    }
+  }
+  //debug
+  std::cout << recon_track_num << " / " << true_track_num << std::endl;
+
+  return static_cast<Float_t>(recon_track_num) / true_track_num;
+}
+
+Float_t Evaluation::GetLen_twov(const two_vector& one, const two_vector& two){
+  return std::sqrt((one.x - two.x)*(one.x - two.x) + (one.y - two.y)*(one.y - two.y));
+}
+
 Float_t Evaluation::GetMin_threevZ(const std::vector<three_vector>& v){
   Float_t Min = 1000000;
   for(const auto& hit : v){
@@ -132,6 +159,14 @@ Float_t Evaluation::GetMax_threevZ(const std::vector<three_vector>& v){
     if(hit.z > Max){Max = hit.z;}
   }
   return Max;
+}
+
+void Evaluation::SetReconThresholdRatio(Float_t value){
+  fReconThresholdRatio = value;
+}
+
+void Evaluation::SetThresholdHitNum(Float_t value){
+  fThresholdHitNum = value;
 }
 
 

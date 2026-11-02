@@ -84,7 +84,7 @@ int main(int argc, char* argv[]){
   //////////////
   TFile* _G4file = TFile::Open(Form("/home/daiki/yasushi/DetSim/EventDisplay/20260116NI/Pgun/monoEmonoDir/e-500-pgun/TrueG4Track/TrueG4Track_%04d.root", target_file));
   TTree* TrueTrackTree = (TTree*)_G4file->Get("track");
-  evaluation.CalEffPur(target_event, TrueTrackTree, matched_track);
+  std::cout << evaluation.CalEff(target_event, TrueTrackTree, matched_track) << std::endl;
 
 
   ////////
