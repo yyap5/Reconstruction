@@ -16,10 +16,14 @@ std::pair<Float_t, Float_t> Evaluation::CalEffPur( //<efficiency, purity>
     GetTrueFiberHits(TrueTrack, FiberPosZ);
 
   //debug
-  for(const auto& [key, v] : TrueFiberHits){
-    std::cout << "key : " << key << std::endl;
-    for(const auto& hit : v){
-      std::cout << "(" << hit.x << ", " << hit.y << ", " << hit.z << ")" << std::endl;
+  for(const auto& match : ReconTrack){
+    std::cout << "----zy----" << std::endl;
+    for(const auto& v : match.first){
+      std::cout << "(" << v.x << ", " << v.y << ")" << std::endl;
+    }
+    std::cout << "----zx----" << std::endl;
+    for(const auto& v : match.second){
+      std::cout << "(" << v.x << ", " << v.y << ")" << std::endl;
     }
   }
 

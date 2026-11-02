@@ -184,12 +184,21 @@ std::pair<std::vector<two_vector>, std::vector<two_vector>> Recon3D::MakeTrack(
   std::vector<two_vector> madeZX;
   std::vector<two_vector> madeZY;
 
+  std::set<Float_t> usedZX;
+  std::set<Float_t> usedZY;
+
 
   for(const auto& hitZX : ZX.at(matchingID.first)){
     for(const auto& hitZY : ZY.at(matchingID.second)){
       if(std::fabs(hitZX.x - hitZY.x) < 11){
-        madeZX.push_back(hitZX);
-        madeZY.push_back(hitZY);
+        if(usedZX.find(hitZX.x) == usedZX.end()){
+          madeZX.push_back(hitZX);
+          usedZX.insert(hitZX.x);
+        }
+        if(usedZY.find(hitZY.x) == usedZY.end()){
+          madeZY.push_back(hitZY);
+          usedZY.insert(hitZY.x);
+        }
       }
     }
   }
