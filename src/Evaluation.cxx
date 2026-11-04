@@ -14,13 +14,6 @@ Float_t Evaluation::CalEff( //<efficiency, purity>
   //TrueTrack to Fiber sheet position hits
   std::unordered_map<int, std::vector<three_vector>> TrueFiberHits = 
     GetTrueFiberHits(TrueTrack, FiberPosZ);
-  //debug
-  for(const auto& [key, vec] : TrueFiberHits){
-    std::cout << "key : " << key << std::endl;
-    for(const auto& v : vec){
-      std::cout << "(" << v.x << ", " << v.y << ", " << v.z << ")" << std::endl;
-    }
-  }
 
   return GetEfficiency(TrueFiberHits, ReconTrack);
 }
@@ -135,8 +128,6 @@ Float_t Evaluation::GetEfficiency(
       if((static_cast<Float_t>(recon_hit_num) / true_num) > fReconThresholdRatio){recon_track_num++;break;}
     }
   }
-  //debug
-  std::cout << recon_track_num << " / " << true_track_num << std::endl;
 
   return static_cast<Float_t>(recon_track_num) / true_track_num;
 }
