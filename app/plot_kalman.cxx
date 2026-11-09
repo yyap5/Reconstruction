@@ -35,6 +35,13 @@ int main(int argc, char* argv[]){
   //this is for true hits
   TFile* _swdfile0 = TFile::Open(Form("/home/daiki/yasushi/nd280/mc/Pgun/monoEmonoDir/e-500-pgun/gun_e-_500MeV_%04d_tree.root", target_file));
   TTree* swdhits = (TTree*)_swdfile0->Get("swdhits");
+  HITSTreeReader SWDhits(swdhits, target_event);
+
+  ////////////////////////
+  //Open Graph True File//
+  ////////////////////////
+  TFile* _graphfile0 = TFile::Open(Form("/home/daiki/yasushi/nd280/mc/Pgun/monoEmonoDir/e-500-pgun/Graph/TrueHit/TrueRoot/truepos_%04d.root", target_file));
+  TTree* graph_true = (TTree*)_graphfile0->Get("truepos");
 
 
   Plotter plotevent;
@@ -43,17 +50,19 @@ int main(int argc, char* argv[]){
   //Read hits and save//
   //////////////////////
   KalmanFitReader Reader(tree, target_event);
+  Reader.GraphTrue(graph_true);
   HITSTreeReader TrueReader(swdhits, target_event);
 
 
   ////////
   //Plot//
   ////////
-  plotevent.SetPrimaryHitsZY(TrueReader.GetPrimaryHitsZY());
-  plotevent.SetPrimaryHitsZX(TrueReader.GetPrimaryHitsZX());
-  plotevent.SetNotPrimaryHitsZY(TrueReader.GetNotPrimaryHitsZY());
-  plotevent.SetNotPrimaryHitsZX(TrueReader.GetNotPrimaryHitsZX());
+  plotevent.SetPrimaryHitsZY(SWDhits.GetPrimaryHitsZY());
+  plotevent.SetPrimaryHitsZX(SWDhits.GetPrimaryHitsZX());
+  plotevent.SetNotPrimaryHitsZY(SWDhits.GetNotPrimaryHitsZY());
+  plotevent.SetNotPrimaryHitsZX(SWDhits.GetNotPrimaryHitsZX());
   plotevent.Set3DReconTrack(Reader.GetFit());
+  plotevent.KalmanTrans(Reader.GetShiftX(), Reader.GetShiftY(), Reader.GetShiftZ());
 
   //plotevent.PlotTrueZY();
   //plotevent.PlotTrueZX();

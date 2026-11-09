@@ -60,6 +60,9 @@ class Plotter{
     void Plot3DReconZX();
     void Plot3DRecon();
 
+    //original coordinate -> Kalman coordinate
+    void KalmanTrans(Float_t mean_x, Float_t mean_y, Float_t mean_z);
+
   private:
 
     void SetHits(const std::vector<two_vector>& hits, TGraph *g);
@@ -99,6 +102,11 @@ class Plotter{
     //for 3D recon track
     std::vector<TGraph*> gs_3DreconZY;
     std::vector<TGraph*> gs_3DreconZX;
+
+    //shift each coordinate
+    Float_t KalmanTransX(Float_t x, Float_t shift);
+    Float_t KalmanTransY(Float_t y, Float_t shift);
+    Float_t KalmanTransZ(Float_t z, Float_t shift);
 };
 
 #endif

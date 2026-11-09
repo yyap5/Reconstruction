@@ -320,9 +320,20 @@ void Plotter::Plot3DRecon(){
 
   //set true hits Black
   g_primaryZY->SetMarkerColor(kBlack);
+  g_primaryZY->SetMarkerSize(0.4);
+  g_primaryZY->SetMarkerStyle(20);
+
   g_primaryZX->SetMarkerColor(kBlack);
+  g_primaryZX->SetMarkerSize(0.4);
+  g_primaryZX->SetMarkerStyle(20);
+
   g_notprimaryZY->SetMarkerColor(kBlack);
+  g_notprimaryZY->SetMarkerSize(0.4);
+  g_notprimaryZY->SetMarkerStyle(20);
+
   g_notprimaryZX->SetMarkerColor(kBlack);
+  g_notprimaryZX->SetMarkerSize(0.4);
+  g_notprimaryZX->SetMarkerStyle(20);
 
 
   TMultiGraph *mg_ZY = new TMultiGraph();
@@ -393,5 +404,64 @@ void Plotter::PlotPIDZX(){
   PlotPID(g_protonZX, g_electronZX, g_muonZX, g_pionZX, g_vertexZX, "X");
 }
 
+Float_t Plotter::KalmanTransX(Float_t x, Float_t shift){
+  return x - 150*shift;
+}
+
+Float_t Plotter::KalmanTransY(Float_t y, Float_t shift){
+  return y - 150*shift;
+}
+
+Float_t Plotter::KalmanTransZ(Float_t z, Float_t shift){
+  return z + 0.5 - 5.*shift;
+}
+
+void Plotter::KalmanTrans(Float_t mean_x, Float_t mean_y, Float_t mean_z){
+  TGraph *g_primaryZY_NEW = new TGraph;
+  TGraph *g_primaryZX_NEW = new TGraph;
+  TGraph *g_notprimaryZY_NEW = new TGraph;
+  TGraph *g_notprimaryZX_NEW = new TGraph;
+
+  int n = g_primaryZY->GetN();
+  if(n!=0){
+    for(int i=0; i<n; i++){
+      Double_t z, y;
+      g_primaryZY->GetPoint(i, z, y);
+      g_primaryZY_NEW->SetPoint(i, KalmanTransZ(z, mean_z), KalmanTransY(y, mean_y));
+    }
+  }
+  g_primaryZY = g_primaryZY_NEW;
+
+  n = g_primaryZX->GetN();
+  if(n!=0){
+    for(int i=0; i<n; i++){
+      Double_t z, x;
+      g_primaryZX->GetPoint(i, z, x);
+      g_primaryZX_NEW->SetPoint(i, KalmanTransZ(z, mean_z), KalmanTransX(x, mean_x));
+    }
+  }
+  g_primaryZX = g_primaryZX_NEW;
+
+  n = g_notprimaryZY->GetN();
+  if(n!=0){
+    for(int i=0; i<n; i++){
+      Double_t z, y;
+      g_notprimaryZY->GetPoint(i, z, y);
+      g_notprimaryZY_NEW->SetPoint(i, KalmanTransZ(z, mean_z), KalmanTransY(y, mean_y));
+    }
+  }
+  g_notprimaryZY = g_notprimaryZY_NEW;
+
+  n = g_notprimaryZX->GetN();
+  if(n!=0){
+    for(int i=0; i<n; i++){
+      Double_t z, x;
+      g_notprimaryZX->GetPoint(i, z, x);
+      g_notprimaryZX_NEW->SetPoint(i, KalmanTransZ(z, mean_z), KalmanTransX(x, mean_x));
+    }
+  }
+  g_notprimaryZX = g_notprimaryZX_NEW;
+
+}
 
 
