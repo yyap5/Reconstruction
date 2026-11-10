@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <TTree.h>
+#include <unordered_map>
 
 #include "DataTypes.hxx"
 
@@ -14,6 +15,7 @@ class KalmanFitReader{
     std::vector<two_vector> GetFitZY(){return fFitZY;}
     std::vector<two_vector> GetFitZX(){return fFitZX;}
     std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> GetFit(){return fFit;}
+    std::unordered_map<int, std::vector<three_vector>> GetFit3D(){return fFit3D;}
 
     void GraphTrue(TTree* graph_tree);
 
@@ -28,6 +30,7 @@ class KalmanFitReader{
     int target_event;
 
     std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> fFit;
+    std::unordered_map<int, std::vector<three_vector>> fFit3D;
     std::vector<two_vector> fFitZY;
     std::vector<two_vector> fFitZX;
 

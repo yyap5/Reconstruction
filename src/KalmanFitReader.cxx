@@ -27,11 +27,14 @@ void KalmanFitReader::Initialize(){
   for(const auto& [key, v] : FittedTrack){
     std::vector<two_vector> zy_track;
     std::vector<two_vector> zx_track;
+    std::vector<three_vector> xyz_track;
     for(const auto& hit : v){
       zy_track.push_back(two_vector{hit.z,hit.y});
       zx_track.push_back(two_vector{hit.z,hit.x});
+      xyz_track.push_back(hit);
     }
     fFit.push_back(make_pair(zy_track, zx_track));
+    fFit3D[key] = xyz_track;
   }
 }
 

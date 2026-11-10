@@ -31,7 +31,7 @@ class Evaluation{
     // have to shift true G4pos because kalmanfilter shift position
     Float_t CalEff( //<efficiency, purity>
         const int& target_event, 
-        TTree* G4Track, const std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>>& ReconTrack,
+        TTree* G4Track, const std::unordered_map<int, std::vector<three_vector>>& ReconTrack,
         Float_t ShiftX, Float_t ShiftY, Float_t ShiftZ);
 
     //Get Geant4 true track
@@ -65,6 +65,13 @@ class Evaluation{
     std::unordered_set<Float_t> GetFiberPosZ(
         const std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>>& ReconTrack);
 
+    //for normal coordinate
+    std::unordered_set<Float_t> GetFiberPosZ();
+
+    //for kalman coordinate
+    std::unordered_set<Float_t> GetFiberPosZ_kalman(Float_t shift_z);
+
+
     //True Track --> True Fiber Hits
     std::unordered_map<int, std::vector<three_vector>> GetTrueFiberHits(
         std::unordered_map<int, std::vector<three_vector>>& TrueTrack, std::unordered_set<Float_t>& FiberPosZ);
@@ -82,12 +89,14 @@ class Evaluation{
 
     Float_t GetEfficiency_3D(
         const std::unordered_map<int, std::vector<three_vector>>& TrueFiberHits,
-        const std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>>& ReconTrack);
+        const std::unordered_map<int, std::vector<three_vector>>& ReconTrack);
 
     Float_t GetMin_threevZ(const std::vector<three_vector>& v);
     Float_t GetMax_threevZ(const std::vector<three_vector>& v);
 
     Float_t GetLen_twov(const two_vector& one, const two_vector& two);
+
+    Float_t GetLen_threev(const three_vector& one, const three_vector& two);
 
     //True track --> shifted true track for kalman filter coordinate
     std::unordered_map<int, std::vector<three_vector>> ShiftTrack(

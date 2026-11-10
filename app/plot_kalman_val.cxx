@@ -58,7 +58,7 @@ int main(int argc, char* argv[]){
       //////////////
       TFile* _G4file = TFile::Open(Form("/home/daiki/yasushi/DetSim/EventDisplay/20260116NI/Pgun/monoEmonoDir/e-500-pgun/TrueG4Track/TrueG4Track_%04d.root", target_file));
       TTree* TrueTrackTree = (TTree*)_G4file->Get("track");
-      _efficiency = evaluation.CalEff(target_event, TrueTrackTree, Reader.GetFit(),
+      _efficiency = evaluation.CalEff(target_event, TrueTrackTree, Reader.GetFit3D(),
           Reader.GetShiftX(), Reader.GetShiftY(), Reader.GetShiftZ());
       outtree->Fill();
 

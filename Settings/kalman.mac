@@ -9,5 +9,5 @@ Recon3D/MatchingLayerNumber 1
 Recon3D/MatchingOverlapThreshold 3
 
 #Evaluation settings
-Evaluation/ReconThresholdRatio 0.3
+Evaluation/ReconThresholdRatio 0.6
 Evaluation/ThresholdHitNum 4
