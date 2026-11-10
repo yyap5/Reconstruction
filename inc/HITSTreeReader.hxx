@@ -19,6 +19,7 @@ class HITSTreeReader{
     std::vector<two_vector> GetElectronHitsZY(){return fElectronHitsZY;}
     std::vector<two_vector> GetMuonHitsZY(){return fMuonHitsZY;}
     std::vector<two_vector> GetPionHitsZY(){return fPionHitsZY;}
+    std::vector<two_vector> GetOtherHitsZY(){return fOtherHitsZY;}
     std::unordered_map<int,std::vector<std::pair<Int_t,charge_two_vector>>> GetAllHitsZY(){return fAllHitsZY;}
 
     std::vector<two_vector> GetPrimaryHitsZX(){return fPrimaryHitsZX;}
@@ -27,6 +28,7 @@ class HITSTreeReader{
     std::vector<two_vector> GetElectronHitsZX(){return fElectronHitsZX;}
     std::vector<two_vector> GetMuonHitsZX(){return fMuonHitsZX;}
     std::vector<two_vector> GetPionHitsZX(){return fPionHitsZX;}
+    std::vector<two_vector> GetOtherHitsZX(){return fOtherHitsZX;}
     std::unordered_map<int,std::vector<std::pair<Int_t,charge_two_vector>>> GetAllHitsZX(){return fAllHitsZX;}
 
 
@@ -42,6 +44,7 @@ class HITSTreeReader{
     std::vector<two_vector> fElectronHitsZY;
     std::vector<two_vector> fMuonHitsZY;
     std::vector<two_vector> fPionHitsZY;
+    std::vector<two_vector> fOtherHitsZY;
     std::unordered_map<int,std::vector<std::pair<Int_t,charge_two_vector>>> fAllHitsZY;
 
     std::vector<two_vector> fPrimaryHitsZX;
@@ -50,6 +53,7 @@ class HITSTreeReader{
     std::vector<two_vector> fElectronHitsZX;
     std::vector<two_vector> fMuonHitsZX;
     std::vector<two_vector> fPionHitsZX;
+    std::vector<two_vector> fOtherHitsZX;
     std::unordered_map<int,std::vector<std::pair<Int_t,charge_two_vector>>> fAllHitsZX;
 
     void Initialize();

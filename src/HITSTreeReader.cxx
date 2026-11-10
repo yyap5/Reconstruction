@@ -46,15 +46,18 @@ void HITSTreeReader::Initialize(){
 
       if(trackId == primaryTrackId){fPrimaryHitsZY.push_back(two_vector{pos.z, pos.y});}
       if(trackId != primaryTrackId){fNotPrimaryHitsZY.push_back(two_vector{pos.z, pos.y});}
-      if(PDG == 2212){fProtonHitsZY.push_back(two_vector{pos.z, pos.y});}
-      if(std::abs(PDG) == 11 or PDG == 22){fElectronHitsZY.push_back(two_vector{pos.z, pos.y});}
-      if(std::abs(PDG) == 13){fMuonHitsZY.push_back(two_vector{pos.z, pos.y});}
-      if(std::abs(PDG) == 211){fPionHitsZY.push_back(two_vector{pos.z, pos.y});}
       //vertex
       if(trackId == primaryTrackId and trackId < ref_trackID){
         ref_trackID = trackId;
         fVertex = {primaryVertex.x, primaryVertex.y, primaryVertex.z};
       }
+      //PID hit
+      bool filled_hit = false;
+      if(PDG == 2212){fProtonHitsZY.push_back(two_vector{pos.z, pos.y});filled_hit=true;}
+      if(std::abs(PDG) == 11 or PDG == 22){fElectronHitsZY.push_back(two_vector{pos.z, pos.y});filled_hit=true;}
+      if(std::abs(PDG) == 13){fMuonHitsZY.push_back(two_vector{pos.z, pos.y});filled_hit=true;}
+      if(std::abs(PDG) == 211){fPionHitsZY.push_back(two_vector{pos.z, pos.y});filled_hit=true;}
+      if(filled_hit == false){fOtherHitsZY.push_back(two_vector{pos.z, pos.y});}
     }
 
     //for ZX plane
@@ -63,15 +66,17 @@ void HITSTreeReader::Initialize(){
 
       if(trackId == primaryTrackId){fPrimaryHitsZX.push_back(two_vector{pos.z, pos.x});}
       if(trackId != primaryTrackId){fNotPrimaryHitsZX.push_back(two_vector{pos.z, pos.x});}
-      if(PDG == 2212){fProtonHitsZX.push_back(two_vector{pos.z, pos.x});}
-      if(std::abs(PDG) == 11 or PDG == 22){fElectronHitsZX.push_back(two_vector{pos.z, pos.x});}
-      if(std::abs(PDG) == 13){fMuonHitsZX.push_back(two_vector{pos.z, pos.x});}
-      if(std::abs(PDG) == 211){fPionHitsZX.push_back(two_vector{pos.z, pos.x});}
       //vertex
       if(trackId == primaryTrackId and trackId < ref_trackID){
         ref_trackID = trackId;
         fVertex = {primaryVertex.x, primaryVertex.y, primaryVertex.z};
       }
+      bool filled_hit = false;
+      if(PDG == 2212){fProtonHitsZX.push_back(two_vector{pos.z, pos.x});filled_hit=true;}
+      if(std::abs(PDG) == 11 or PDG == 22){fElectronHitsZX.push_back(two_vector{pos.z, pos.x});filled_hit=true;}
+      if(std::abs(PDG) == 13){fMuonHitsZX.push_back(two_vector{pos.z, pos.x});filled_hit=true;}
+      if(std::abs(PDG) == 211){fPionHitsZX.push_back(two_vector{pos.z, pos.x});filled_hit=true;}
+      if(filled_hit == false){fOtherHitsZX.push_back(two_vector{pos.z, pos.x});}
     }
   }
 }

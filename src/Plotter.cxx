@@ -56,19 +56,21 @@ void Plotter::SetReconVertexZX(const three_vector& vertex){
 }
 
 void Plotter::SetPIDHitsZY(
-    const std::vector<two_vector>& proton, const std::vector<two_vector>& electron, const std::vector<two_vector>& muon, const std::vector<two_vector>& pion){
+    const std::vector<two_vector>& proton, const std::vector<two_vector>& electron, const std::vector<two_vector>& muon, const std::vector<two_vector>& pion, const std::vector<two_vector>& other){
   SetHits(proton, g_protonZY);
   SetHits(electron, g_electronZY);
   SetHits(muon, g_muonZY);
   SetHits(pion, g_pionZY);
+  SetHits(other, g_otherZY);
 }
 
 void Plotter::SetPIDHitsZX(
-    const std::vector<two_vector>& proton, const std::vector<two_vector>& electron, const std::vector<two_vector>& muon, const std::vector<two_vector>& pion){
+    const std::vector<two_vector>& proton, const std::vector<two_vector>& electron, const std::vector<two_vector>& muon, const std::vector<two_vector>& pion, const std::vector<two_vector>& other){
   SetHits(proton, g_protonZX);
   SetHits(electron, g_electronZX);
   SetHits(muon, g_muonZX);
   SetHits(pion, g_pionZX);
+  SetHits(other, g_otherZX);
 }
 
 void Plotter::SetTracks(
@@ -253,8 +255,10 @@ void Plotter::Plot2DTrue(){
   //true hits
   mg_ZX->Add(g_primaryZX, "P");
   mg_ZX->Add(g_notprimaryZX, "P");
+  mg_ZX->Add(g_vertexZX, "P");
   mg_ZY->Add(g_primaryZY, "P");
   mg_ZY->Add(g_notprimaryZY, "P");
+  mg_ZY->Add(g_vertexZY, "P");
 
   mg_ZX->SetTitle("True Hits;Z [mm];X [mm]");
   mg_ZY->SetTitle("True Hits;Z [mm];Y [mm]");
@@ -266,6 +270,61 @@ void Plotter::Plot2DTrue(){
   mg_ZY->GetXaxis()->SetLimits(-900, 350);
   mg_ZY->Draw("A");
 
+  c->Update();
+}
+
+void Plotter::Plot2DTruePID(){
+
+  TCanvas *c = new TCanvas("c", "PID plot", 800, 1000);
+  c->Divide(1,2);
+
+  TMultiGraph *mg_ZY = new TMultiGraph;
+  TMultiGraph *mg_ZX = new TMultiGraph;
+
+  //Setting color
+  g_protonZY->SetMarkerColor(kRed);
+  g_protonZX->SetMarkerColor(kRed);
+  g_electronZY->SetMarkerColor(kCyan+1);
+  g_electronZX->SetMarkerColor(kCyan+1);
+  g_muonZY->SetMarkerColor(kBlue);
+  g_muonZX->SetMarkerColor(kBlue);
+  g_pionZY->SetMarkerColor(kGreen+2);
+  g_pionZX->SetMarkerColor(kGreen+2);
+  g_otherZY->SetMarkerColor(kBlack);
+  g_otherZX->SetMarkerColor(kBlack);
+
+  //Add hit
+  mg_ZY->Add(g_vertexZY, "P");
+  mg_ZX->Add(g_vertexZX, "P");
+  mg_ZY->Add(g_protonZY, "P");
+  mg_ZX->Add(g_protonZX, "P");
+  mg_ZY->Add(g_electronZY, "P");
+  mg_ZX->Add(g_electronZX, "P");
+  mg_ZY->Add(g_muonZY, "P");
+  mg_ZX->Add(g_muonZX, "P");
+  mg_ZY->Add(g_pionZY, "P");
+  mg_ZX->Add(g_pionZX, "P");
+  mg_ZY->Add(g_otherZY, "P");
+  mg_ZX->Add(g_otherZX, "P");
+
+  mg_ZY->SetTitle("True Hits;Z[mm];Y[mm]");
+  mg_ZX->SetTitle("True Hits;Z[mm];X[mm]");
+
+  c->cd(1);
+  mg_ZX->GetXaxis()->SetLimits(-900,350);
+  mg_ZX->Draw("A");
+  c->cd(2);
+  mg_ZY->GetXaxis()->SetLimits(-900,350);
+  mg_ZY->Draw("A");
+
+  TLegend *leg = new TLegend(0.6, 0.7, 0.9, 0.89);
+  leg->AddEntry(g_protonZY, "Proton", "p");
+  leg->AddEntry(g_electronZY, "Electron", "p");
+  leg->AddEntry(g_muonZY, "Muon", "p");
+  leg->AddEntry(g_pionZY, "Pion", "p");
+  leg->SetBorderSize(0);
+  leg->Draw();
+  
   c->Update();
 }
 

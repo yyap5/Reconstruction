@@ -40,6 +40,8 @@ int main(int argc, char* argv[]){
   //Plot//
   ////////
   Plotter plotevent;
+  plotevent.SetVertexZY(SWDhits.GetVertex());
+  plotevent.SetVertexZX(SWDhits.GetVertex());
   plotevent.SetPrimaryHitsZY(SWDhits.GetPrimaryHitsZY());
   plotevent.SetPrimaryHitsZX(SWDhits.GetPrimaryHitsZX());
   plotevent.SetNotPrimaryHitsZY(SWDhits.GetNotPrimaryHitsZY());

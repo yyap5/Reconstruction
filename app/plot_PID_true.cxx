@@ -47,9 +47,9 @@ int main(int argc, char* argv[]){
   plotevent.SetNotPrimaryHitsZY(SWDhits.GetNotPrimaryHitsZY());
   plotevent.SetNotPrimaryHitsZX(SWDhits.GetNotPrimaryHitsZX());
   plotevent.SetPIDHitsZY(SWDhits.GetProtonHitsZY(), SWDhits.GetElectronHitsZY(), 
-      SWDhits.GetMuonHitsZY(), SWDhits.GetPionHitsZY());
+      SWDhits.GetMuonHitsZY(), SWDhits.GetPionHitsZY(), SWDhits.GetOtherHitsZY());
   plotevent.SetPIDHitsZX(SWDhits.GetProtonHitsZX(), SWDhits.GetElectronHitsZX(), 
-      SWDhits.GetMuonHitsZX(), SWDhits.GetPionHitsZX());
+      SWDhits.GetMuonHitsZX(), SWDhits.GetPionHitsZX(), SWDhits.GetOtherHitsZX());
 
   //plotevent.Plot2DTrue();
   plotevent.PlotPIDZY();

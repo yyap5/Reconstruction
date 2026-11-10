@@ -29,14 +29,14 @@ class Plotter{
     void SetPrimaryHitsZY(const std::vector<two_vector>& hits);
     void SetNotPrimaryHitsZY(const std::vector<two_vector>& hits);
     void SetReconTrackZY(const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& hits);
-    void SetPIDHitsZY(const std::vector<two_vector>& proton, const std::vector<two_vector>& electron, const std::vector<two_vector>& muon, const std::vector<two_vector>& pion);
+    void SetPIDHitsZY(const std::vector<two_vector>& proton, const std::vector<two_vector>& electron, const std::vector<two_vector>& muon, const std::vector<two_vector>& pion, const std::vector<two_vector>& other);
 
 
     //Setting ZX Points
     void SetPrimaryHitsZX(const std::vector<two_vector>& hits);
     void SetNotPrimaryHitsZX(const std::vector<two_vector>& hits);
     void SetReconTrackZX(const std::unordered_map<int, std::vector<std::pair<int, two_vector>>>& hits);
-    void SetPIDHitsZX(const std::vector<two_vector>& proton, const std::vector<two_vector>& electron, const std::vector<two_vector>& muon, const std::vector<two_vector>& pion);
+    void SetPIDHitsZX(const std::vector<two_vector>& proton, const std::vector<two_vector>& electron, const std::vector<two_vector>& muon, const std::vector<two_vector>& pion, const std::vector<two_vector>& other);
 
     //Setting 3D recon track
     void Set3DReconTrack(const std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>>& hits);
@@ -56,6 +56,7 @@ class Plotter{
 
     //Plotting Both
     void Plot2DTrue();
+    void Plot2DTruePID();
     void Plot2DRecon();
 
     //Plotting 3D recon
@@ -94,6 +95,7 @@ class Plotter{
     TGraph *g_electronZY = new TGraph;
     TGraph *g_muonZY = new TGraph;
     TGraph *g_pionZY = new TGraph;
+    TGraph *g_otherZY = new TGraph;
     std::vector<TGraph*> gs_reconZY;
 
     //for ZX plane
@@ -103,6 +105,7 @@ class Plotter{
     TGraph *g_electronZX = new TGraph;
     TGraph *g_muonZX = new TGraph;
     TGraph *g_pionZX = new TGraph;
+    TGraph *g_otherZX = new TGraph;
     std::vector<TGraph*> gs_reconZX;
 
     //for 3D recon track
