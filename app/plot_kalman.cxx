@@ -12,6 +12,7 @@
 #include "Recon3D.hxx"
 #include "ParameterMessenger.hxx"
 #include "KalmanFitReader.hxx"
+#include "Evaluation.hxx"
 
 
 int main(int argc, char* argv[]){
@@ -45,6 +46,13 @@ int main(int argc, char* argv[]){
 
 
   Plotter plotevent;
+  Evaluation evaluation;
+
+  /////////////////////
+  //Get True G4 Track//
+  /////////////////////
+  TFile* _G4file = TFile::Open(Form("/home/daiki/yasushi/DetSim/EventDisplay/20260116NI/Pgun/monoEmonoDir/e-500-pgun/TrueG4Track/TrueG4Track_%04d.root", target_file));
+  TTree* TrueTrackTree = (TTree*)_G4file->Get("track");
 
   //////////////////////
   //Read hits and save//
@@ -57,10 +65,12 @@ int main(int argc, char* argv[]){
   ////////
   //Plot//
   ////////
-  plotevent.SetPrimaryHitsZY(SWDhits.GetPrimaryHitsZY());
-  plotevent.SetPrimaryHitsZX(SWDhits.GetPrimaryHitsZX());
-  plotevent.SetNotPrimaryHitsZY(SWDhits.GetNotPrimaryHitsZY());
-  plotevent.SetNotPrimaryHitsZX(SWDhits.GetNotPrimaryHitsZX());
+  plotevent.SetG4Track(evaluation.GetG4(target_event, TrueTrackTree, 
+        Reader.GetShiftX(), Reader.GetShiftY(), Reader.GetShiftZ()));
+  plotevent.SetPrimaryHitsZY(evaluation.GetG4ZY(target_event, TrueTrackTree,
+        Reader.GetShiftX(), Reader.GetShiftY(), Reader.GetShiftZ()));
+  plotevent.SetPrimaryHitsZX(evaluation.GetG4ZX(target_event, TrueTrackTree,
+        Reader.GetShiftX(), Reader.GetShiftY(), Reader.GetShiftZ()));
   plotevent.Set3DReconTrack(Reader.GetFit());
   plotevent.KalmanTrans(Reader.GetShiftX(), Reader.GetShiftY(), Reader.GetShiftZ());
 
@@ -68,7 +78,8 @@ int main(int argc, char* argv[]){
   //plotevent.PlotTrueZX();
   //plotevent.PlotTrueAndReconZY();
   //plotevent.PlotTrueAndReconZX();
-  plotevent.Plot3DRecon();
+  //plotevent.Plot3DRecon();
+  plotevent.Plot3DReconG4();
 
   app.Run();
   return 0;

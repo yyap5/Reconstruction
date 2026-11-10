@@ -27,6 +27,22 @@ class Evaluation{
         const int& target_event, 
         TTree* G4Track, const std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>>& ReconTrack);
 
+    //evaluation for kalmanfilter
+    // have to shift true G4pos because kalmanfilter shift position
+    Float_t CalEff( //<efficiency, purity>
+        const int& target_event, 
+        TTree* G4Track, const std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>>& ReconTrack,
+        Float_t ShiftX, Float_t ShiftY, Float_t ShiftZ);
+
+    //Get Geant4 true track
+    std::vector<two_vector> GetG4ZY(const int& target_event, TTree* G4Track, 
+        Float_t shift_x, Float_t shift_y, Float_t shift_z);
+    std::vector<two_vector> GetG4ZX(const int& target_event, TTree* G4Track,
+        Float_t shift_x, Float_t shift_y, Float_t shift_z);
+
+    std::unordered_map<int, std::vector<three_vector>> GetG4(const int& target_event, 
+        TTree* G4Track, Float_t shift_x, Float_t shift_y, Float_t shift_z);
+
 
   private:
 
@@ -38,6 +54,7 @@ class Evaluation{
     //it is regarded as a track.
     //In other words, the track whose track is less than this value is not considerd.
     Int_t fThresholdHitNum; //<= #hits ----> regarded as track
+
 
     void ReadG4Track( //Read True G4 Track
         TTree* G4Track, 
@@ -63,10 +80,24 @@ class Evaluation{
         const std::unordered_map<int, std::vector<three_vector>>& TrueFiberHits,
         const std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>>& ReconTrack);
 
+    Float_t GetEfficiency_3D(
+        const std::unordered_map<int, std::vector<three_vector>>& TrueFiberHits,
+        const std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>>& ReconTrack);
+
     Float_t GetMin_threevZ(const std::vector<three_vector>& v);
     Float_t GetMax_threevZ(const std::vector<three_vector>& v);
 
     Float_t GetLen_twov(const two_vector& one, const two_vector& two);
+
+    //True track --> shifted true track for kalman filter coordinate
+    std::unordered_map<int, std::vector<three_vector>> ShiftTrack(
+        const std::unordered_map<int, std::vector<three_vector>>& TrueTrack,
+        Float_t shift_x, Float_t shift_y, Float_t shift_z);
+
+    //shift each coordinate
+    Float_t ShiftX(Float_t x, Float_t shift);
+    Float_t ShiftY(Float_t y, Float_t shift);
+    Float_t ShiftZ(Float_t z, Float_t shift);
 
 };
 

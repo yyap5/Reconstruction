@@ -464,4 +464,55 @@ void Plotter::KalmanTrans(Float_t mean_x, Float_t mean_y, Float_t mean_z){
 
 }
 
+void Plotter::SetG4Track(const std::unordered_map<int, std::vector<three_vector>>& G4Track){
+
+  std::unordered_map<int, std::vector<std::pair<int, two_vector>>> G4ZY;
+  std::unordered_map<int, std::vector<std::pair<int, two_vector>>> G4ZX;
+
+  for(const auto& [key,track] : G4Track){
+    for(const auto& hit : track){
+      G4ZY[key].push_back(std::make_pair(0,two_vector{hit.z,hit.y}));
+      G4ZX[key].push_back(std::make_pair(0,two_vector{hit.z,hit.x}));
+    }
+  }
+  SetTracks(G4ZY, gs_G4ZY);
+  SetTracks(G4ZX, gs_G4ZX);
+}
+
+void Plotter::Plot3DReconG4(){
+  TCanvas *c = new TCanvas("c", "G4 track", 800, 1000);
+  c->Divide(1,2);
+
+  TMultiGraph *mg_ZY = new TMultiGraph();
+  TMultiGraph *mg_ZX = new TMultiGraph();
+
+  for(auto* g : gs_3DreconZY){
+    mg_ZY->Add(g, "L");
+  }
+
+  for(auto* g : gs_3DreconZX){
+    mg_ZX->Add(g, "L");
+  }
+
+  for(auto* g : gs_G4ZY){
+    g->SetLineColor(kBlack);
+    g->SetLineWidth(1);
+    mg_ZY->Add(g, "L");
+  }
+  for(auto* g : gs_G4ZX){
+    g->SetLineColor(kBlack);
+    g->SetLineWidth(1);
+    mg_ZX->Add(g, "L");
+  }
+  c->cd(1);
+  mg_ZX->GetXaxis()->SetLimits(-900, 350);
+  mg_ZX->Draw("A");
+  c->cd(2);
+  mg_ZY->GetXaxis()->SetLimits(-900, 350);
+  mg_ZY->Draw("A");
+
+  c->Update();
+
+}
+
 

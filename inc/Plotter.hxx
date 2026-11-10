@@ -41,6 +41,9 @@ class Plotter{
     //Setting 3D recon track
     void Set3DReconTrack(const std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>>& hits);
 
+    //Setting G4 True Track
+    void SetG4Track(const std::unordered_map<int, std::vector<three_vector>>& G4Track);
+
     //Plotting ZY plane
     void PlotTrueAndReconZY();
     void PlotTrueZY();
@@ -62,6 +65,9 @@ class Plotter{
 
     //original coordinate -> Kalman coordinate
     void KalmanTrans(Float_t mean_x, Float_t mean_y, Float_t mean_z);
+
+    //Use Geant4 True Track
+    void Plot3DReconG4();
 
   private:
 
@@ -107,6 +113,10 @@ class Plotter{
     Float_t KalmanTransX(Float_t x, Float_t shift);
     Float_t KalmanTransY(Float_t y, Float_t shift);
     Float_t KalmanTransZ(Float_t z, Float_t shift);
+
+    //G4 True Track
+    std::vector<TGraph*> gs_G4ZY;
+    std::vector<TGraph*> gs_G4ZX;
 };
 
 #endif

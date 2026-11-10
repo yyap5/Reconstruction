@@ -44,7 +44,7 @@ int main(){
       /*
          if(argc == 4){
          std::string MacroFileName = Form("../Settings/%s", argv[3]);
-         messenger.LoadFile(MacroFileName, track_reconstructor, track_reconstructor3D);
+         messenger.LoadFile(MacroFileName, track_reconstructor, track_reconstructor3D, evaluation);
          }
        */
 

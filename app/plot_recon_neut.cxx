@@ -11,6 +11,7 @@
 #include "Sort.hxx"
 #include "Recon3D.hxx"
 #include "ParameterMessenger.hxx"
+#include "Evaluation.hxx"
 
 
 int main(int argc, char* argv[]){
@@ -33,11 +34,12 @@ int main(int argc, char* argv[]){
   TrackReconstructor track_reconstructor;
   Recon3D track_reconstructor3D;
   Plotter plotevent;
+  Evaluation evaluation;
   ParameterMessenger messenger;
   //Read Macro file
   if(argc == 4){
     std::string MacroFileName = Form("../Settings/%s", argv[3]);
-    messenger.LoadFile(MacroFileName, track_reconstructor, track_reconstructor3D);
+    messenger.LoadFile(MacroFileName, track_reconstructor, track_reconstructor3D, evaluation);
   }
 
   //////////////////////

@@ -1,6 +1,6 @@
 #include "ParameterMessenger.hxx"
 
-void ParameterMessenger::LoadFile(const std::string& filename, TrackReconstructor& reconstructor, Recon3D& reconstructor_3D){
+void ParameterMessenger::LoadFile(const std::string& filename, TrackReconstructor& reconstructor, Recon3D& reconstructor_3D, Evaluation& evaluation){
 
   std::ifstream file(filename);
 
@@ -48,6 +48,12 @@ void ParameterMessenger::LoadFile(const std::string& filename, TrackReconstructo
     }
     else if(command == "Recon3D/MatchingOverlapThreshold"){
       reconstructor_3D.SetMatchingOverlapThreshold(static_cast<Int_t>(value));
+    }
+    else if(command == "Evaluation/ReconThresholdRatio"){
+      evaluation.SetReconThresholdRatio(value);
+    }
+    else if(command == "Evaluation/ThresholdHitNum"){
+      evaluation.SetThresholdHitNum(value);
     }
     else{
       std::cout << "Unknown command : " << command << std::endl;

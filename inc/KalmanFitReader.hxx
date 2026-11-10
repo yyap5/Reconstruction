@@ -15,8 +15,6 @@ class KalmanFitReader{
     std::vector<two_vector> GetFitZX(){return fFitZX;}
     std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>> GetFit(){return fFit;}
 
-    //doesn''t work
-    //maybe, true pos which original TTree has.are wrong
     void GraphTrue(TTree* graph_tree);
 
     std::vector<two_vector> GetTrueZY(){return fGraphTrueZY;}

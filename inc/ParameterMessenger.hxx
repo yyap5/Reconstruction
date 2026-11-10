@@ -9,10 +9,11 @@
 
 #include "TrackReconstructor.hxx"
 #include "Recon3D.hxx"
+#include "Evaluation.hxx"
 
 class ParameterMessenger{
   public:
-    void LoadFile(const std::string& filename, TrackReconstructor& reconstructor, Recon3D& reconstructor_3D);
+    void LoadFile(const std::string& filename, TrackReconstructor& reconstructor, Recon3D& reconstructor_3D, Evaluation& evaluation);
 };
 
 

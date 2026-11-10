@@ -7,3 +7,7 @@ TrackReconstructor/MaxLength 25.
 #Recon3D settings
 Recon3D/MatchingLayerNumber 1
 Recon3D/MatchingOverlapThreshold 3
+
+#Evaluation settings
+Evaluation/ReconThresholdRatio 0.8
+Evaluation/ThresholdHitNum 4

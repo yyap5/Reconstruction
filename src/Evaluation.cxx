@@ -18,6 +18,51 @@ Float_t Evaluation::CalEff( //<efficiency, purity>
   return GetEfficiency(TrueFiberHits, ReconTrack);
 }
 
+//for kalmanfilter
+Float_t Evaluation::CalEff( //<efficiency, purity>
+    const int& target_event,
+    TTree* G4Track, const std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>>& ReconTrack,
+    Float_t ShiftX, Float_t ShiftY, Float_t ShiftZ){
+
+  //Read TrueTrack
+  std::unordered_map<int, std::vector<three_vector>> TrueTrack;
+  ReadG4Track(G4Track, target_event, TrueTrack);
+
+  //Shift TrueTrack for kalman filter coordinate
+  std::unordered_map<int, std::vector<three_vector>> ShiftedTrueTrack = ShiftTrack(TrueTrack, ShiftX, ShiftY, ShiftZ);
+
+  //debug
+  /*
+  std::cout << "True Track" << std::endl;
+  for(const auto& [key,track] : ShiftedTrueTrack){
+    std::cout << "----------key : " << key << std::endl;
+    for(const auto& hit : track){
+      std::cout << "(" << hit.x << ", " << hit.y << ", " << hit.z << ")" << std::endl;
+    }
+  }
+  for(const auto& pair_track : ReconTrack){
+    std::cout << "zy track---------------" << std::endl;
+    for(const auto& zy_track : pair_track.first){
+      std::cout << "(" << zy_track.x << ", " << zy_track.y << ")" << std::endl;
+    }
+    std::cout << "zx track---------------" << std::endl;
+    for(const auto& zx_track : pair_track.second){
+      std::cout << "(" << zx_track.x << ", " << zx_track.y << ")" << std::endl;
+    }
+  }
+  */
+  //debug
+
+  //find used Z from matched recon track
+  std::unordered_set<Float_t> FiberPosZ = GetFiberPosZ(ReconTrack);
+
+  //TrueTrack to Fiber sheet position hits
+  std::unordered_map<int, std::vector<three_vector>> TrueFiberHits = 
+    GetTrueFiberHits(ShiftedTrueTrack, FiberPosZ);
+
+  return GetEfficiency_3D(TrueFiberHits, ReconTrack);
+}
+
 void Evaluation::ReadG4Track( //Read True G4 Track
     TTree* G4Track,
     const Int_t& target_event,
@@ -132,6 +177,39 @@ Float_t Evaluation::GetEfficiency(
   return static_cast<Float_t>(recon_track_num) / true_track_num;
 }
 
+Float_t Evaluation::GetEfficiency_3D(
+    const std::unordered_map<int, std::vector<three_vector>>& TrueFiberHits,
+    const std::vector<std::pair<std::vector<two_vector>, std::vector<two_vector>>>& ReconTrack){
+
+  //parameter
+  Float_t judge_len = 5.;
+
+  int true_track_num = 0;
+  int recon_track_num = 0;
+
+  for(const auto& [key, true_vec] : TrueFiberHits){
+    if(true_vec.size() < fThresholdHitNum){continue;}//if #hit < 4, they are not regarded as ture track
+    true_track_num++;
+    //one true track hits num
+    int true_num = static_cast<int>(true_vec.size());
+    //cal the number of the reconstructed hits
+    for(const auto& recon_pair_track : ReconTrack){
+      int recon_hit_num = 0;
+      for(const auto& true_hit : true_vec){
+        for(const auto& zy_hit : recon_pair_track.first){
+          if(GetLen_twov(two_vector{true_hit.z, true_hit.y}, zy_hit) < judge_len){recon_hit_num++;}
+        }
+        for(const auto& zx_hit : recon_pair_track.second){
+          if(GetLen_twov(two_vector{true_hit.z, true_hit.x}, zx_hit) < judge_len){recon_hit_num++;}
+        }
+      }
+      if((static_cast<Float_t>(recon_hit_num / 2.) / true_num) > fReconThresholdRatio){recon_track_num++;break;}
+    }
+  }
+
+  return static_cast<Float_t>(recon_track_num) / true_track_num;
+}
+
 Float_t Evaluation::GetLen_twov(const two_vector& one, const two_vector& two){
   return std::sqrt((one.x - two.x)*(one.x - two.x) + (one.y - two.y)*(one.y - two.y));
 }
@@ -160,7 +238,75 @@ void Evaluation::SetThresholdHitNum(Float_t value){
   fThresholdHitNum = value;
 }
 
+std::unordered_map<int, std::vector<three_vector>> Evaluation::ShiftTrack(
+    const std::unordered_map<int, std::vector<three_vector>>& TrueTrack,
+    Float_t shift_x, Float_t shift_y, Float_t shift_z){
 
+  std::unordered_map<int, std::vector<three_vector>> ShiftedTrack;
+  for(const auto& [key, track] : TrueTrack){
+    for(const auto& hit : track){
+      ShiftedTrack[key].push_back(three_vector{
+          ShiftX(hit.x, shift_x), 
+          ShiftY(hit.y, shift_y), 
+          ShiftZ(hit.z, shift_z)});
+    }
+  }
+  return ShiftedTrack;
+}
+
+Float_t Evaluation::ShiftX(Float_t x, Float_t shift){
+  return x -150*shift;
+}
+
+Float_t Evaluation::ShiftY(Float_t y, Float_t shift){
+  return y -150*shift;
+}
+
+Float_t Evaluation::ShiftZ(Float_t z, Float_t shift){
+  return z + 0.5 - 5.*shift;
+}
+
+std::vector<two_vector> Evaluation::GetG4ZY(const int& target_event, TTree* G4Track,
+    Float_t ShiftX, Float_t ShiftY, Float_t ShiftZ){
+  std::vector<two_vector> G4ZY;
+  //Read TrueTrack
+  std::unordered_map<int, std::vector<three_vector>> TrueTrack;
+  ReadG4Track(G4Track, target_event, TrueTrack);
+  std::unordered_map<int, std::vector<three_vector>> ShiftedTrueTrack = ShiftTrack(TrueTrack, ShiftX, ShiftY, ShiftZ);
+
+  for(const auto& [key,track] : ShiftedTrueTrack){
+    for(const auto& hit : track){
+      G4ZY.push_back(two_vector{hit.z, hit.y});
+    }
+  }
+  return G4ZY;
+}
+
+std::vector<two_vector> Evaluation::GetG4ZX(const int& target_event, TTree* G4Track,
+    Float_t ShiftX, Float_t ShiftY, Float_t ShiftZ){
+  std::vector<two_vector> G4ZX;
+  //Read TrueTrack
+  std::unordered_map<int, std::vector<three_vector>> TrueTrack;
+  ReadG4Track(G4Track, target_event, TrueTrack);
+  std::unordered_map<int, std::vector<three_vector>> ShiftedTrueTrack = ShiftTrack(TrueTrack, ShiftX, ShiftY, ShiftZ);
+
+  for(const auto& [key,track] : ShiftedTrueTrack){
+    for(const auto& hit : track){
+      G4ZX.push_back(two_vector{hit.z, hit.x});
+    }
+  }
+  return G4ZX;
+}
+
+std::unordered_map<int, std::vector<three_vector>> Evaluation::GetG4(const int& target_event,
+    TTree* G4Track, Float_t shift_x, Float_t shift_y, Float_t shift_z){
+
+  std::unordered_map<int, std::vector<three_vector>> TrueTrack;
+  ReadG4Track(G4Track, target_event, TrueTrack);
+  std::unordered_map<int, std::vector<three_vector>> ShiftedTrueTrack = ShiftTrack(TrueTrack, shift_x, shift_y, shift_z);
+
+  return ShiftedTrueTrack;
+}
 
 
 
