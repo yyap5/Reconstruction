@@ -59,8 +59,6 @@ three_vector VertexRecon::GetVertex_uDeltaRay(
   }
 
   int DeltaRayScore = GetDeltaRayScore(matched_track, trackID);
-  //debug
-  std::cout << "DeltaRayScore : " << DeltaRayScore << std::endl;
   if(DeltaRayScore>=0){
     two_vector minhitZY = GetMinZhit(matched_track.at(trackID).first);
     two_vector minhitZX = GetMinZhit(matched_track.at(trackID).second);
