@@ -31,7 +31,7 @@ class TrackReconstructor{
   private:
 
     Float_t fMaxSlopeChange;
-    Float_t fMaxSlopeChangeAdjacent;
+    Float_t fMaxSlopeChangeAdjacent;//OLD parameter, is not used
     Float_t fMaxLength;
 
     Float_t Length(const two_vector& a, const two_vector& b);

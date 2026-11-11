@@ -95,14 +95,16 @@ std::unordered_map<int, std::vector<std::pair<int,two_vector>>> TrackReconstruct
         }
         if(hit.back().first < 2){continue;}
         Float_t sl = atan(Slope(hit.back().second, new_hit));
-        Float_t p_sl = atan(hit.back().first-1);
-        Float_t m_sl = atan(-1*hit.back().first+1);
-        Float_t p_sl_change = std::fabs(p_sl - sl);
-        Float_t m_sl_change = std::fabs(m_sl - sl);
-        Float_t slope_change = m_sl_change;
-        if(p_sl_change < m_sl_change){slope_change = p_sl_change;}
-        if(slope_change > fMaxSlopeChangeAdjacent){continue;}
-        ad_evaluation_value[i][key] = slope_change;
+        if(atan(hit.back().first-2) < sl and sl < atan(hit.back().first)){
+          Float_t slope_change = std::fabs(sl - (atan(hit.back().first-2) + atan(hit.back().first))/2.);
+          ad_evaluation_value[i][key] = slope_change;
+          continue;
+        }
+        if(atan(-1*hit.back().first) < sl and sl < atan(-1*hit.back().first+2)){
+          Float_t slope_change = std::fabs(sl - (atan(-1*hit.back().first) + atan(-1*hit.back().first+2))/2.);
+          ad_evaluation_value[i][key] = slope_change;
+          continue;
+        }
       }
       //line
       else{
