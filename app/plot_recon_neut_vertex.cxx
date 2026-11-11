@@ -84,7 +84,7 @@ int main(int argc, char* argv[]){
   /////////////////////////
   //Vertex Reconstruction//
   /////////////////////////
-  three_vector recon_vertex = vertex_recon.GetVertex_minz(matched_track);
+  three_vector recon_vertex = vertex_recon.GetVertex_uDeltaRay(matched_track);
 
 
   ////////
