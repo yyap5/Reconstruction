@@ -14,9 +14,6 @@ void HITSTreeReader::Initialize(){
   Float_t charge;
   three_vector pos;
   three_vector primaryVertex;
-  three_vector truePos;
-  four_momentum initialMomentum;
-  four_momentum primaryInitialMomentum;
 
   tree->SetBranchAddress("event", &event);
   tree->SetBranchAddress("trackId", &trackId);
@@ -26,12 +23,9 @@ void HITSTreeReader::Initialize(){
   tree->SetBranchAddress("SWDFiberType", &SWDFiberType);
   tree->SetBranchAddress("SWDFiberModule", &SWDFiberModule);
   tree->SetBranchAddress("SWDFiberNumber", &SWDFiberNumber);
-  tree->SetBranchAddress("initialMomentum", &initialMomentum);
   tree->SetBranchAddress("pos", &pos);
-  tree->SetBranchAddress("truePos", &truePos);
   tree->SetBranchAddress("charge", &charge);
   tree->SetBranchAddress("primaryVertex", &primaryVertex);
-  tree->SetBranchAddress("primaryInitialMomentum", &primaryInitialMomentum);
 
 
   int nentries = tree->GetEntries();
